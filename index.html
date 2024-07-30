@@ -14,8 +14,8 @@
             --on-primary-container: hsl(40, 100%, 10%);
             --secondary: #6c5c3f;
             --on-secondary: #ffffff;
-            --secondary-container: #ede1c9;
-            --secondary-container-hover: #dbceb3;
+            --secondary-container: hsl(40, 24%, 84%);
+            --secondary-container-hover: hsl(42, 20%, 76%);
             --on-secondary-container: #493408;
             --tertiary: #4c6545;
             --on-tertiary: #ffffff;
@@ -67,7 +67,7 @@
             border-radius: 4px;
             cursor: pointer;
             margin: 8px;
-            transition: background-color 0.3s ease;
+            transition: color, background-color 0.3s ease;
         }
 
         button.hidden {
@@ -118,18 +118,26 @@
             margin-right: 8px;
         }
 
-        #clock {
-            font-size: 20px;
-            margin: 20px;
+        #currentTime {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
             text-align: center;
             color: var(--on-surface-variant);
+        }
+
+        #clock {
+            font-size: 24px;
             font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--on-surface-variant);
         }
 
         #progressBar {
             width: 100%;
             background-color: var(--surface-dim);
-            margin-top: 40px;
+            margin-top: 32px;
             margin-bottom: 16px;
             border-radius: 8px;
             overflow: hidden;
@@ -208,6 +216,7 @@
 </head>
 <body>
     <h1>Work Time Tracker</h1>
+    <div id="currentTime"><span>Current Time</span></div>
     <div id="clock"></div>
     <div>
         <div id="targetHours-group">
