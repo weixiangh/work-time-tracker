@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Time Tracker</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #79590c;
+            --on-primary: #ffffff;
+            --primary-container: #fddaa5;
+            --primary-container-hover: #f0c775;
+            --on-primary-container: hsl(40, 100%, 10%);
+            --secondary: #6c5c3f;
+            --on-secondary: #ffffff;
+            --secondary-container: #ede1c9;
+            --secondary-container-hover: #dbceb3;
+            --on-secondary-container: #493408;
+            --tertiary: #4c6545;
+            --on-tertiary: #ffffff;
+            --tertiary-container: #cdebc2;
+            --on-tertiary-container: #092007;
+            --error: #ba1a1a;
+            --on-error: #ffffff;
+            --error-container: #ffdad6;
+            --error-container-hover: #f1bfbb;
+            --on-error-container: #410002;
+            --disable-container: #e1e0e0;
+            --on-disable-container: #7c7979;
+            --background: #fffdfa;
+            --on-background: #1f1c1a;
+            --surface-dim: #e3d9cc;
+            --surface: #fff8f2;
+            --on-surface: #201b13;
+            --surface-variant: hsl(33, 80%, 92%);
+            --on-surface-variant: #4e4639;
+            --outline: #7f7667;
+            --inverse-primary: #ebc06c;
+        }
+
+        body {
+            font-family: 'SF Pro Display', Arial, sans-serif;
+            background-color: var(--surface);
+            color: var(--on-surface);
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--on-surface-variant);
+            font-size: 40px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        button.hidden {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+        }
+
+        button.visible {
+            opacity: 1;
+            pointer-events: auto;
+            position: relative;
+        }
+
+        button.disable {
+            pointer-events: none;
+            background-color: var(--disable-container);
+            color: var(--on-disable-container);
+        }
+
+        .button-primary {
+            background-color: var(--primary-container);
+            color: var(--on-primary-container);
+        }
+        .button-primary:hover {
+            background-color: var(--primary-container-hover);
+        }
+
+        .button-secondary {
+            background-color: var(--secondary-container);
+            color: var(--on-secondary-container);
+        }
+        .button-secondary:hover {
+            background-color: var(--secondary-container-hover);
+        }
+
+        .button-error {
+            background-color: var(--error-container);
+            color: var(--on-error-container);
+        }
+        .button-error:hover {
+            background-color: var(--error-container-hover);
+        }
+
+
+        .material-icons {
+            font-size: 18px;
+            margin-right: 8px;
+        }
+
+        #clock {
+            font-size: 20px;
+            margin: 20px;
+            text-align: center;
+            color: var(--on-surface-variant);
+            font-weight: 600;
+        }
+
+        #progressBar {
+            width: 100%;
+            background-color: var(--surface-dim);
+            margin-top: 40px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            height: 60px;
+        }
+
+        #progress {
+            width: 0%;
+            height: 100%;
+            background-color: var(--inverse-primary);
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+
+        #progressPercentage, #currentWorkTime {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            text-align: center;
+        }
+
+        #progressPercentage {
+            top: 14%;
+            font-size: 24px;
+            color: var(--secondary);
+            font-weight: 800;
+        }
+
+        #currentWorkTime {
+            top: 60%;
+            font-size: 14px;
+            color: var(--on-surface-variant);
+            font-weight: 500;
+        }
+
+        #targetHours {
+            padding: 8px;
+            margin: 0px 8px;
+            border: 1px solid var(--outline);
+            border-radius: 4px;
+            background-color: var(--background);
+            color: var(--on-surface);
+            font-size: 16px;
+        }
+
+        #targetHours-group {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background-color: var(--surface-variant);
+        }
+
+        details {
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        summary {
+            font-size: 16px;
+            padding: 16px;
+            color: var(--on-surface-variant);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        #records {
+            padding: 16px;
+            background-color: var(--surface);
+            color: var(--on-surface);
+        }
+    </style>
+</head>
+<body>
+    <h1>Work Time Tracker</h1>
+    <div id="clock"></div>
+    <div>
+        <div id="targetHours-group">
+            <label for="targetHours">Today I want to work</label>
+            <input type="number" id="targetHours" min="0" max="24" step="0.5" value="6">
+            <label for="targetHours">hours.</label>
+        </div>
+    </div>
+    <div id="progressBar">
+        <div id="progress">
+            <span id="progressPercentage"></span>
+            <span id="currentWorkTime"></span>
+        </div>
+    </div>
+    <div>
+        <button class="button-primary" id="clockIn" onclick="clockIn()">
+            <i class="material-icons">play_arrow</i>
+            <span>Clock In</span>
+        </button>
+        <button class="button-primary disable" id="startBreak" onclick="startBreak()">
+            <i class="material-icons">coffee</i>
+            <span>Break</span>
+        </button>
+        <button class="button-primary hidden" id="endBreak" onclick="endBreak()">
+            <i class="material-icons">business_center</i>
+            <span>Work</span>
+        </button>
+    </div>
+    <div>
+        <button class="button-secondary disable" id="clockOut" onclick="clockOut()">
+            <i class="material-icons">stop</i>
+            <span>Clock Out</span>
+        </button>
+        <button class="button-error" id="reset" onclick="reset()">
+            <i class="material-icons">refresh</i>
+            <span>Reset</span>
+        </button>
+    </div>
+    <details id="recordsDetails">
+        <summary>Work Records</summary>
+        <button class="button-error" id="clearRecords" onclick="clearRecords()">
+            <i class="material-icons">delete</i>
+            <span>Clear Records</span>
+        </button>
+        <div id="records"></div>
+    </details>
+
+    <script>
+        let records = JSON.parse(localStorage.getItem('workRecords')) || [];
+        let startTime = null;
+        let isOnBreak = false;
+        let breakStartTime = null;
+        let totalBreakTime = 0;
+
+        function updateClock() {
+            const now = new Date();
+            const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', options);
+        }
+
+        function addRecord(type) {
+            const now = new Date();
+            records.push({ type, time: now.toLocaleString('en-US', { hour12: false }) });
+            localStorage.setItem('workRecords', JSON.stringify(records));
+            displayRecords();
+        }
+
+        function displayRecords() {
+            const recordsDiv = document.getElementById('records');
+            recordsDiv.innerHTML = '';
+            records.forEach(record => {
+                recordsDiv.innerHTML += `<p>${record.type}: ${record.time}</p>`;
+            });
+        }
+
+        function updateProgressAndTime() {
+            if (!startTime) return;
+            
+            const now = new Date();
+            let elapsedTime = now - startTime - (totalBreakTime * 1000);
+            if (isOnBreak) {
+                elapsedTime -= (now - breakStartTime);
+            }
+            const elapsedSeconds = elapsedTime / 1000;
+            const elapsedHours = elapsedSeconds / 3600;
+            const targetHours = parseFloat(document.getElementById('targetHours').value);
+            const percentage = Math.min((elapsedHours / targetHours) * 100, 100);
+            
+            document.getElementById('progress').style.width = percentage + '%';
+            document.getElementById('progressPercentage').textContent = `${percentage.toFixed(1)}%`;
+            
+            // 格式化時間顯示
+            const hours = Math.floor(elapsedSeconds / 3600);
+            const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+            const seconds = Math.floor(elapsedSeconds % 60);
+            const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            document.getElementById('currentWorkTime').textContent = timeString;
+        }
+
+        function clockIn() {
+            if (!startTime) {
+                // 清除之前的 interval（如果存在）
+                clearInterval(progressInterval);
+
+                startTime = new Date();
+                addRecord('Clock In');
+                document.getElementById('startBreak').classList.remove('disable');
+                document.getElementById('startBreak').classList.add('visible');
+                document.getElementById('clockIn').classList.remove('visible');
+                document.getElementById('clockIn').classList.add('disable');
+                document.getElementById('clockOut').classList.remove('disable');
+                document.getElementById('clockOut').classList.add('visible');
+                updateProgressAndTime(); // 立即更新進度
+                // 開始每秒更新進度
+                progressInterval = setInterval(updateProgressAndTime, 1000);
+            }
+        }
+        function clockOut() {
+            if (confirm("Do you want to clock out?")) {
+                // 停止所有相關變量
+                if (startTime) {
+                    if (isOnBreak) {
+                        endBreak();
+                    }
+                    }
+                    addRecord('Clock Out');
+                    startTime = null;
+                    totalBreakTime = 0;
+                    // 重置按鈕顯示狀態
+                    document.getElementById('startBreak').classList.remove('visible');
+                    document.getElementById('startBreak').classList.add('disable');
+                    document.getElementById('endBreak').classList.remove('visible');
+                    document.getElementById('endBreak').classList.add('hidden');
+                    document.getElementById('clockOut').classList.remove('visible');
+                    document.getElementById('clockOut').classList.add('disable');
+                    clearInterval(progressInterval); // 停止進度更新
+                    updateProgressAndTime(); // 最後更新一次進度
+            }
+        }
+        let progressInterval; //在全局範圍內添加一個變量來存儲 interval
+        function startBreak() {
+            if (!isOnBreak && startTime) {
+                isOnBreak = true;
+                breakStartTime = new Date();
+                document.getElementById('startBreak').classList.remove('visible');
+                document.getElementById('startBreak').classList.add('hidden');
+                document.getElementById('endBreak').classList.remove('hidden');
+                document.getElementById('endBreak').classList.add('visible');
+                addRecord('Start Break');
+                updateProgressAndTime();
+            }
+        }
+
+        function endBreak() {
+            if (isOnBreak) {
+                isOnBreak = false;
+                const breakEndTime = new Date();
+                totalBreakTime += (breakEndTime - breakStartTime) / 1000;
+                breakStartTime = null;
+                document.getElementById('startBreak').classList.remove('hidden');
+                document.getElementById('startBreak').classList.add('visible');
+                document.getElementById('endBreak').classList.remove('visible');
+                document.getElementById('endBreak').classList.add('hidden');
+                addRecord('End Break');
+                updateProgressAndTime();
+            }
+        }
+        function clearRecords() {
+            if (confirm('Are you sure?')) {
+                records = [];
+                localStorage.removeItem('workRecords');
+                displayRecords();
+                alert('All records have been cleared.');
+            }
+        }
+        function reset() {
+            if (confirm("Are you sure?")) {
+                // 重置所有相關變量
+                startTime = null;
+                isOnBreak = false;
+                breakStartTime = null;
+                totalBreakTime = 0;
+
+                // 清除進度顯示
+                document.getElementById('progress').style.width = '0%';
+                document.getElementById('progressPercentage').textContent = '0.0%';
+                document.getElementById('currentWorkTime').textContent = '00:00:00';
+
+                // 重置按鈕顯示狀態
+                document.getElementById('clockIn').classList.remove('disable');
+                document.getElementById('clockIn').classList.add('visible');
+                document.getElementById('startBreak').classList.remove('hidden');
+                document.getElementById('startBreak').classList.add('disable');
+                document.getElementById('endBreak').classList.remove('visible');
+                document.getElementById('endBreak').classList.add('hidden');
+                document.getElementById('clockOut').classList.remove('visible');
+                document.getElementById('clockOut').classList.add('disable');
+
+                // 停止進度更新
+                clearInterval(progressInterval);
+
+                // 添加重置記錄
+                addRecord('reset');
+
+                // 更新顯示
+                updateProgressAndTime();
+            }
+        }
+
+        setInterval(updateClock, 1000);
+        displayRecords();
+    </script>
+</body>
+</html>
