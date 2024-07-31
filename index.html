@@ -149,9 +149,9 @@
             margin-top: 32px;
             margin-bottom: 16px;
             border-radius: 8px;
-            overflow: hidden;
-            position: relative;
             height: 60px;
+            position: relative;
+            overflow: hidden;
         }
 
         #progress {
@@ -160,6 +160,29 @@
             background-color: var(--progress-color);
             border-radius: 4px;
             transition: width 0.5s;
+            min-width: 2%; /* 設置最小寬度 */
+            transition: width 0.5s ease-out; /* 添加過渡效果 */
+        }
+
+        #initialMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--on-surface-variant);
+            font-size: 14px;
+        }
+
+
+        /* 添加進度條動畫 */
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .pulsing {
+            animation: pulse 2s infinite;
         }
 
         #progressPercentage, #currentWorkTime {
@@ -168,6 +191,8 @@
             transform: translateX(-50%);
             width: 100%;
             text-align: center;
+            opacity: 0; /* 初始設置為不可見 */
+            transition: opacity 0.5s ease-in; /* 添加過渡效果 */
         }
 
         #progressPercentage {
@@ -241,6 +266,7 @@
             <span id="progressPercentage"></span>
             <span id="currentWorkTime"></span>
         </div>
+        <span id="initialMessage">Click "Work" to start.</span>
     </div>
     <div>
         <button class="button-primary" id="work" onclick="work()">
@@ -283,6 +309,7 @@
         const getOffButton = document.getElementById('getOff');
         const resetButton = document.getElementById('reset');
         const clearRecordsButton = document.getElementById('clearRecords');
+        const initialMessageElement = document.getElementById('initialMessage');
     
         let records = JSON.parse(localStorage.getItem('workRecords')) || [];
         let startTime = null;
@@ -321,16 +348,26 @@
     
         // 優化進度更新函數，減少不必要的計算
         function updateProgressAndTime() {
-            if (!startTime) return;
+            if (!startTime) {
+                initialMessageElement.style.display = 'block';
+                progressElement.style.width = '0%';
+                progressPercentageElement.style.opacity = '0';
+                currentWorkTimeElement.style.opacity = '0';
+                return;
+            }
+            
+            initialMessageElement.style.display = 'none';
+            progressPercentageElement.style.opacity = '1';
+            currentWorkTimeElement.style.opacity = '1';
             
             const now = new Date();
             let elapsedTime = now - startTime - (totalBreakTime * 1000);
             if (isOnBreak) {
                 elapsedTime -= (now - breakStartTime);
             }
-            const elapsedHours = elapsedTime / 3600000; // 直接計算小時，避免多次除法
+            const elapsedHours = elapsedTime / 3600000;
             const targetHours = parseFloat(targetHoursInput.value);
-            const percentage = Math.min((elapsedHours / targetHours) * 100, 100);
+            let percentage = Math.min((elapsedHours / targetHours) * 100, 100);
             
             progressElement.style.width = `${percentage}%`;
             progressPercentageElement.textContent = `${percentage.toFixed(1)}%`;
@@ -342,6 +379,13 @@
             const seconds = Math.floor((elapsedHours * 3600) % 60);
             
             currentWorkTimeElement.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+            
+            // 脈動效果
+            if (percentage < 5) {
+                progressElement.classList.add('pulsing');
+            } else {
+                progressElement.classList.remove('pulsing');
+            }
         }
     
         function work() {
@@ -365,6 +409,10 @@
                 workButton.classList.add('disabled');
                 getOffButton.classList.remove('disabled');
                 getOffButton.classList.add('normal');
+                initialMessageElement.style.display = 'none';
+                progressElement.style.width = '2%'; // 設置初始可見寬度
+                progressPercentageElement.style.opacity = '1';
+                currentWorkTimeElement.style.opacity = '1';
                 updateProgressAndTime();
                 progressInterval = setInterval(updateProgressAndTime, 1000);
             }
@@ -426,6 +474,14 @@
             startBreakButton.classList.add('disabled');
             getOffButton.classList.remove('normal');
             getOffButton.classList.add('disabled');
+            
+            // 重置進度條顯示
+            initialMessageElement.style.display = 'block';
+            progressElement.style.width = '0%';
+            progressPercentageElement.style.opacity = '0';
+            currentWorkTimeElement.style.opacity = '0';
+            progressPercentageElement.textContent = '0.0%';
+            currentWorkTimeElement.textContent = '00:00:00';
     
             // 停止進度更新
             clearInterval(progressInterval);
@@ -476,6 +532,7 @@
     
         requestAnimationFrame(updateClock);
         displayRecords();
+        updateProgressAndTime();
     
         // 移除按鈕上的 onclick 屬性
         workButton.removeAttribute('onclick');
@@ -483,6 +540,7 @@
         getOffButton.removeAttribute('onclick');
         resetButton.removeAttribute('onclick');
         clearRecordsButton.removeAttribute('onclick');
+
     </script>
 </body>
 </html>
