@@ -9,17 +9,16 @@
     <link rel="apple-touch-icon" href="/work-time-tracker/apple-touch-icon.png">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        /* CSS styles remain unchanged */
         :root {
             --primary: #79590c;
             --on-primary: #ffffff;
             --primary-container: #fddaa5;
             --primary-container-hover: #f0c775;
-            --on-primary-container: hsl(40, 100%, 10%);
+            --on-primary-container: #332200;
             --secondary: #6c5c3f;
             --on-secondary: #ffffff;
-            --secondary-container: hsl(40, 24%, 84%);
-            --secondary-container-hover: hsl(42, 20%, 76%);
+            --secondary-container: #e0d9cc;
+            --secondary-container-hover: #cec7b6;
             --on-secondary-container: #493408;
             --tertiary: #4c6545;
             --on-tertiary: #ffffff;
@@ -37,7 +36,7 @@
             --surface-dim: #e3d9cc;
             --surface: #fff8f2;
             --on-surface: #201b13;
-            --surface-variant: hsl(33, 80%, 92%);
+            --surface-variant: #fbecda;
             --on-surface-variant: #4e4639;
             --outline: #7f7667;
             --inverse-primary: #ebc06c;
@@ -104,13 +103,13 @@
             }
         }
 
-        button.visible {
+        button.normal {
             display: inline-flex;
             pointer-events: auto;
             position: relative;
         }
 
-        button.disable {
+        button.disabled {
             pointer-events: none;
             background-color: var(--disable-container);
             color: var(--on-disable-container);
@@ -119,6 +118,7 @@
         #clearRecords {
             width: auto;
         }
+
 
         .material-icons {
             font-size: 18px;
@@ -243,13 +243,13 @@
             <i class="material-icons">play_arrow</i>
             <span>Work</span>
         </button>
-        <button class="button-primary disable" id="startBreak" onclick="startBreak()">
+        <button class="button-primary disabled" id="startBreak" onclick="startBreak()">
             <i class="material-icons">pause</i>
             <span>Break</span>
         </button>
     </div>
     <div>
-        <button class="button-secondary disable" id="getOff" onclick="getOff()">
+        <button class="button-secondary disabled" id="getOff" onclick="getOff()">
             <i class="material-icons">stop</i>
             <span>Get Off</span>
         </button>
@@ -268,48 +268,34 @@
     </details>
 
     <script>
-        // 存儲常用的DOM元素引用，以提高性能
-        const workBtn = document.getElementById('work');
-        const startBreakBtn = document.getElementById('startBreak');
-        const getOffBtn = document.getElementById('getOff');
-        const progressBar = document.getElementById('progress');
-        const progressPercentage = document.getElementById('progressPercentage');
-        const currentWorkTime = document.getElementById('currentWorkTime');
-
-        // 初始化變量
-        let records = loadRecords();
+        let records = JSON.parse(localStorage.getItem('workRecords')) || [];
         let startTime = null;
         let isOnBreak = false;
         let breakStartTime = null;
         let totalBreakTime = 0;
         let progressInterval;
 
-        // 更新時鐘顯示
         function updateClock() {
             const now = new Date();
             const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
             document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', options);
         }
 
-        // 添加新記錄
         function addRecord(type) {
             const now = new Date();
             records.push({ type, time: now.toLocaleString('en-US', { hour12: false }) });
-            saveRecords(); // 保存記錄到localStorage
+            localStorage.setItem('workRecords', JSON.stringify(records));
             displayRecords();
         }
 
-        // 顯示所有記錄
         function displayRecords() {
             const recordsDiv = document.getElementById('records');
             recordsDiv.innerHTML = '';
             records.forEach(record => {
-                // 使用模板字符串提高可讀性
                 recordsDiv.innerHTML += `<p>${record.type}: ${record.time}</p>`;
             });
         }
 
-        // 更新進度條和工作時間顯示
         function updateProgressAndTime() {
             if (!startTime) return;
             
@@ -323,146 +309,18 @@
             const targetHours = parseFloat(document.getElementById('targetHours').value);
             const percentage = Math.min((elapsedHours / targetHours) * 100, 100);
             
-            progressBar.style.width = `${percentage}%`;
-            progressPercentage.textContent = `${percentage.toFixed(1)}%`;
-            currentWorkTime.textContent = formatTime(elapsedSeconds);
-
-            // 使用 requestAnimationFrame 來實現更流暢的動畫
-            requestAnimationFrame(updateProgressAndTime);
+            document.getElementById('progress').style.width = percentage + '%';
+            document.getElementById('progressPercentage').textContent = `${percentage.toFixed(1)}%`;
+            
+            // 格式化時間顯示
+            const hours = Math.floor(elapsedSeconds / 3600);
+            const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+            const seconds = Math.floor(elapsedSeconds % 60);
+            const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            document.getElementById('currentWorkTime').textContent = timeString;
         }
 
-        // 更新按鈕狀態
-        function updateButtonStates(isWorking, isOnBreak) {
-            workBtn.classList.toggle('disable', isWorking && !isOnBreak);
-            workBtn.classList.toggle('visible', !isWorking || isOnBreak);
-            startBreakBtn.classList.toggle('disable', !isWorking || isOnBreak);
-            startBreakBtn.classList.toggle('visible', isWorking && !isOnBreak);
-            getOffBtn.classList.toggle('disable', !isWorking);
-            getOffBtn.classList.toggle('visible', isWorking);
-        }
-
-        // 格式化時間顯示
-        function formatTime(seconds) {
-            const hours = Math.floor(seconds / 3600);
-            const minutes = Math.floor((seconds % 3600) / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        // 保存記錄
-        function saveRecords() {
-            try {
-                localStorage.setItem('workRecords', JSON.stringify(records));
-            } catch (e) {
-                console.error('Failed to save records to localStorage:', e);
-                // 添加用戶通知
-                alert('Failed to save records. Please check your browser settings.');
-            }
-        }
-
-        // 讀取記錄
-        function loadRecords() {
-            try {
-                const savedRecords = localStorage.getItem('workRecords');
-                return savedRecords ? JSON.parse(savedRecords) : [];
-            } catch (e) {
-                console.error('Failed to load records from localStorage:', e);
-                // 添加用戶通知
-                alert('Failed to load records. Using empty record set.');
-                return [];
-            }
-        }
-
-        // 事件監聽器
-        document.addEventListener('DOMContentLoaded', function() {
-            // 使用 addEventListener 替代內聯事件處理
-            const workBtn = document.getElementById('work');
-            const startBreakBtn = document.getElementById('startBreak');
-            const getOffBtn = document.getElementById('getOff');
-            const resetBtn = document.getElementById('reset');
-            const clearRecordsBtn = document.getElementById('clearRecords');
-
-            // 移除可能存在的舊事件監聽器，防止重複綁定
-            workBtn.removeEventListener('click', work);
-            startBreakBtn.removeEventListener('click', startBreak);
-            getOffBtn.removeEventListener('click', getOffHandler);
-            resetBtn.removeEventListener('click', resetHandler);
-            clearRecordsBtn.removeEventListener('click', clearRecordsHandler);
-
-            // 添加新的事件監聽器
-            workBtn.addEventListener('click', work);
-            startBreakBtn.addEventListener('click', startBreak);
-            getOffBtn.addEventListener('click', getOffHandler);
-            resetBtn.addEventListener('click', resetHandler);
-            clearRecordsBtn.addEventListener('click', clearRecordsHandler);
-
-            setInterval(updateClock, 1000);
-            displayRecords();
-        });
-
-        function getOff() {
-            if (confirm("Do you want to get off?")) {
-                getOffHandler();
-            }
-        }
-
-        // 結束工作
-        function getOffHandler() {
-            if (startTime) {
-                if (isOnBreak) {
-                    const breakEndTime = new Date();
-                    totalBreakTime += (breakEndTime - breakStartTime) / 1000;
-                    addRecord('End Break');
-                }
-                addRecord('Get Off');
-                startTime = null;
-                isOnBreak = false;
-                totalBreakTime = 0;
-                updateButtonStates(false, false);
-                clearInterval(progressInterval);
-                updateProgressAndTime();
-            }
-        }
-
-        // 處理 Reset 按鈕的點擊事件
-        function reset() {
-            if (confirm("Are you sure?")) {
-                resetHandler();
-            }
-        }
-
-        // 重置所有狀態
-        function resetHandler() {
-            startTime = null;
-            isOnBreak = false;
-            breakStartTime = null;
-            totalBreakTime = 0;
-
-            progressBar.style.width = '0%';
-            progressPercentage.textContent = '0.0%';
-            currentWorkTime.textContent = '00:00:00';
-
-            updateButtonStates(false, false);
-            clearInterval(progressInterval);
-            addRecord('Reset');
-            updateProgressAndTime();
-        }
-
-        // 處理 Clear Records 按鈕的點擊事件
-        function clearRecords() {
-            if (confirm('Are you sure?')) {
-                clearRecordsHandler();
-            }
-        }
-
-        function clearRecordsHandler() {
-            records = []; // 清空記錄數組
-            saveRecords(); // 將空數組保存到localStorage
-            displayRecords(); // 重新顯示記錄
-            alert('All records have been cleared.');
-        }
-
-        // 開始工作或從休息中恢復
         function work() {
             if (!startTime || isOnBreak) {
                 if (isOnBreak) {
@@ -478,25 +336,104 @@
                     addRecord('Work');
                 }
                 
+                // 清除之前的 interval（如果存在）
                 clearInterval(progressInterval);
-                updateButtonStates(true, false);
-                updateProgressAndTime();
+                
+                document.getElementById('startBreak').classList.remove('disabled');
+                document.getElementById('startBreak').classList.add('normal');
+                document.getElementById('work').classList.remove('normal');
+                document.getElementById('work').classList.add('disabled');
+                document.getElementById('getOff').classList.remove('disabled');
+                document.getElementById('getOff').classList.add('normal');
+                updateProgressAndTime(); // 立即更新進度
+                // 開始每秒更新進度
                 progressInterval = setInterval(updateProgressAndTime, 1000);
             }
         }
 
-        // 開始休息
         function startBreak() {
             if (!isOnBreak && startTime) {
                 isOnBreak = true;
                 breakStartTime = new Date();
-                updateButtonStates(true, true);
+                document.getElementById('startBreak').classList.remove('normal');
+                document.getElementById('startBreak').classList.add('disabled');
+                document.getElementById('work').classList.remove('disabled');
+                document.getElementById('work').classList.add('normal');
+                //document.getElementById('work').querySelector('span').textContent = 'Resume';
                 addRecord('Start Break');
                 updateProgressAndTime();
             }
         }
 
+        function getOff() {
+            if (confirm("Do you want to get off?")) {
+                if (startTime) {
+                    if (isOnBreak) {
+                        const breakEndTime = new Date();
+                        totalBreakTime += (breakEndTime - breakStartTime) / 1000;
+                        addRecord('End Break');
+                    }
+                    addRecord('Get Off');
+                    startTime = null;
+                    isOnBreak = false;
+                    totalBreakTime = 0;
+                    // 重置按鈕顯示狀態
+                    document.getElementById('startBreak').classList.remove('normal');
+                    document.getElementById('startBreak').classList.add('disabled');
+                    document.getElementById('work').classList.remove('disabled');
+                    document.getElementById('work').classList.add('normal');
+                    document.getElementById('work').querySelector('span').textContent = 'Work';
+                    document.getElementById('getOff').classList.remove('normal');
+                    document.getElementById('getOff').classList.add('disabled');
+                    clearInterval(progressInterval); // 停止進度更新
+                    updateProgressAndTime(); // 最後更新一次進度
+                }
+            }
+        }
 
+        function reset() {
+            if (confirm("Are you sure?")) {
+                // 重置所有相關變量
+                startTime = null;
+                isOnBreak = false;
+                breakStartTime = null;
+                totalBreakTime = 0;
+
+                // 清除進度顯示
+                document.getElementById('progress').style.width = '0%';
+                document.getElementById('progressPercentage').textContent = '0.0%';
+                document.getElementById('currentWorkTime').textContent = '00:00:00';
+
+                // 重置按鈕顯示狀態
+                document.getElementById('work').classList.remove('disabled');
+                document.getElementById('work').classList.add('normal');
+                //document.getElementById('work').querySelector('span').textContent = 'Work';
+                document.getElementById('startBreak').classList.remove('normal');
+                document.getElementById('startBreak').classList.add('disabled');
+                document.getElementById('getOff').classList.remove('normal');
+                document.getElementById('getOff').classList.add('disabled');
+
+                // 停止進度更新
+                clearInterval(progressInterval);
+
+                // 添加重置記錄
+                addRecord('Reset');
+
+                // 更新顯示
+                updateProgressAndTime();
+            }
+        }
+
+        function clearRecords() {
+            if (confirm('Are you sure?')) {
+                records = [];
+                localStorage.removeItem('workRecords');
+                displayRecords();
+                alert('All records have been cleared.');
+            }
+        }
+        setInterval(updateClock, 1000);
+        displayRecords();
     </script>
 </body>
 </html>
