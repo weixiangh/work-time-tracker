@@ -249,18 +249,18 @@
         </button>
     </div>
     <div>
-        <button class="button-secondary disable" id="getOff" onclick="getOffHandler()">
+        <button class="button-secondary disable" id="getOff" onclick="getOff()">
             <i class="material-icons">stop</i>
             <span>Get Off</span>
         </button>
-        <button class="button-error" id="reset" onclick="resetHandler()">
+        <button class="button-error" id="reset" onclick="reset()">
             <i class="material-icons">refresh</i>
             <span>Reset</span>
         </button>
     </div>
     <details id="recordsDetails">
         <summary>Work Records</summary>
-        <button class="button-error" id="clearRecords" onclick="clearRecordsHandler()">
+        <button class="button-error" id="clearRecords" onclick="clearRecords()">
             <i class="material-icons">delete</i>
             <span>Clear Records</span>
         </button>
@@ -400,15 +400,14 @@
             displayRecords();
         });
 
-        // 處理 Get Off 按鈕的點擊事件
-        function getOffHandler() {
+        function getOff() {
             if (confirm("Do you want to get off?")) {
-                getOff();
+                getOffHandler();
             }
         }
 
         // 結束工作
-        function getOff() {
+        function getOffHandler() {
             if (startTime) {
                 if (isOnBreak) {
                     const breakEndTime = new Date();
@@ -426,14 +425,14 @@
         }
 
         // 處理 Reset 按鈕的點擊事件
-        function resetHandler() {
+        function reset() {
             if (confirm("Are you sure?")) {
-                reset();
+                resetHandler();
             }
         }
 
         // 重置所有狀態
-        function reset() {
+        function resetHandler() {
             startTime = null;
             isOnBreak = false;
             breakStartTime = null;
@@ -450,13 +449,13 @@
         }
 
         // 處理 Clear Records 按鈕的點擊事件
-        function clearRecordsHandler() {
+        function clearRecords() {
             if (confirm('Are you sure?')) {
-                clearRecords();
+                clearRecordsHandler();
             }
         }
 
-        function clearRecords() {
+        function clearRecordsHandler() {
             records = []; // 清空記錄數組
             saveRecords(); // 將空數組保存到localStorage
             displayRecords(); // 重新顯示記錄
