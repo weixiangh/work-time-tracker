@@ -46,7 +46,7 @@
             font-family: 'SF Pro Display', Arial, sans-serif;
             background-color: var(--surface);
             color: var(--on-surface);
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
             padding: 20px;
             text-align: center;
@@ -64,7 +64,7 @@
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 550;
             min-height: 44px;
             width: 128px;
             padding: 12px 16px;
@@ -145,7 +145,7 @@
 
         #progressBar {
             width: 100%;
-            --progress-color: var(--inverse-primary);
+            --progress-color: var(--primary-container-hover);
             background-color: var(--surface-dim);
             margin-top: 32px;
             margin-bottom: 16px;
@@ -153,6 +153,7 @@
             height: 60px;
             position: relative;
             overflow: hidden;
+            opacity: 0.5; /* 初始為半透明 */
         }
 
         #progress {
@@ -171,7 +172,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 500;
             color: var(--on-surface-variant);
             transition: opacity 0.5s ease-out; /* 過渡效果 */
         }
@@ -247,10 +248,31 @@
         }
 
         #records {
-            padding: 16px;
-            background-color: var(--surface);
-            color: var(--on-surface);
+        width: 100%;
         }
+
+        .record-item {
+            display: grid;
+            grid-template-columns: 1fr;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .record-time, .record-action {
+            padding: 5px 0;
+        }
+
+        .record-time {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--on-surface-variant);
+        }
+
+        .record-action {
+            font-size: 16px;
+            color: var(--secondary);
+        }
+
     </style>
 </head>
 <body>
@@ -286,14 +308,14 @@
             <i class="material-icons">stop</i>
             <span>Get Off</span>
         </button>
-        <button class="button-error" id="reset" onclick="reset()">
+        <button class="button-error disabled" id="reset" onclick="reset()">
             <i class="material-icons">refresh</i>
             <span>Reset</span>
         </button>
     </div>
     <details id="recordsDetails">
         <summary>Work Records</summary>
-        <button class="button-error" id="clearRecords" onclick="clearRecords()">
+        <button class="button-error"  id="clearRecords" onclick="clearRecords()">
             <i class="material-icons">delete</i>
             <span>Clear Records</span>
         </button>
@@ -303,6 +325,7 @@
     <script>
         // 使用常量來存儲重複使用的DOM元素，提高效能
         const clockElement = document.getElementById('clock');
+        const progressBarElement = document.getElementById('progressBar');
         const progressElement = document.getElementById('progress');
         const progressPercentageElement = document.getElementById('progressPercentage');
         const currentWorkTimeElement = document.getElementById('currentWorkTime');
@@ -328,31 +351,63 @@
             clockElement.textContent = now.toLocaleTimeString('en-US', options);
             requestAnimationFrame(updateClock);
         }
-    
+        
+        // 新增一個格式化日期的輔助函數
+        function formatDate(date) {
+            return date.getFullYear() + '-' + 
+                String(date.getMonth() + 1).padStart(2, '0') + '-' +
+                String(date.getDate()).padStart(2, '0');
+        }
+
+        // 新增一個格式化時間的輔助函數
+        function formatTime(date) {
+            return date.toTimeString().split(' ')[0];
+        }
+
+        // 新增一個格式化持續時間的輔助函數
+        function formatDuration(milliseconds) {
+            const hours = Math.floor(milliseconds / 3600000);
+            const minutes = Math.floor((milliseconds % 3600000) / 60000);
+            const seconds = Math.floor((milliseconds % 60000) / 1000);
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // 修改 addRecord 函數
         function addRecord(type) {
             const now = new Date();
-            records.push({ type, time: now.toLocaleString('en-US', { hour12: false }) });
+            records.push({ 
+                type, 
+                date: formatDate(now),
+                time: formatTime(now)
+            });
             localStorage.setItem('workRecords', JSON.stringify(records));
             displayRecords();
         }
-    
-        // 使用文檔片段來優化DOM操作，減少重排和重繪
+
+        // 修改 displayRecords 函數
         function displayRecords() {
             const recordsDiv = document.getElementById('records');
-            const fragment = document.createDocumentFragment();
-            records.forEach(record => {
-                const p = document.createElement('p');
-                p.textContent = `${record.type}: ${record.time}`;
-                fragment.appendChild(p);
+            recordsDiv.innerHTML = ''; // 清空現有內容
+            records.slice().reverse().forEach(record => {
+                const div = document.createElement('div');
+                div.className = 'record-item';
+                const timeSpan = document.createElement('span');
+                timeSpan.className = 'record-time';
+                timeSpan.textContent = `${record.date} ${record.time}`;
+                const actionSpan = document.createElement('span');
+                actionSpan.className = 'record-action';
+                actionSpan.textContent = record.type;
+                div.appendChild(timeSpan);
+                div.appendChild(actionSpan);
+                recordsDiv.appendChild(div);
             });
-            recordsDiv.innerHTML = '';
-            recordsDiv.appendChild(fragment);
         }
-    
+
         // 優化進度更新函數，減少不必要的計算
         function updateProgressAndTime() {
             if (!startTime) {
                 initialMessageElement.style.display = 'block';
+                progressBarElement.style.opacity = '0.5';
                 progressElement.style.display = 'none'; // 設置初始不可見
                 progressPercentageElement.style.opacity = '0';
                 currentWorkTimeElement.style.opacity = '0';
@@ -389,6 +444,9 @@
             } else {
                 progressElement.classList.remove('pulsing');
             }
+
+            // 更流暢的動畫效果
+            requestAnimationFrame(updateProgressAndTime);
         }
     
         function work() {
@@ -412,11 +470,14 @@
                 workButton.classList.add('disabled');
                 getOffButton.classList.remove('disabled');
                 getOffButton.classList.add('normal');
+                resetButton.classList.remove('disabled');
+                resetButton.classList.add('normal');
                 initialMessageElement.style.display = 'none';
                 progressElement.style.display = 'block'; // 設置初始可見
                 progressElement.style.width = '2%'; // 設置初始可見寬度
                 progressPercentageElement.style.opacity = '1';
                 currentWorkTimeElement.style.opacity = '1';
+                progressBarElement.style.opacity = '1';
                 updateProgressAndTime();
                 progressInterval = setInterval(updateProgressAndTime, 1000);
             }
@@ -437,15 +498,28 @@
     
         function getOff() {
             if (startTime) {
+                const endTime = new Date();
+                let totalWorkTime = endTime - startTime - (totalBreakTime * 1000);
                 if (isOnBreak) {
-                    const breakEndTime = new Date();
+                    const breakEndTime = endTime;
                     totalBreakTime += (breakEndTime - breakStartTime) / 1000;
                     addRecord('End Break');
                 }
+                
+                // 使用新的格式化函數生成報告
+                const workTimeFormatted = formatDuration(totalWorkTime);
+                const breakTimeFormatted = formatDuration(totalBreakTime * 1000);
+                
+                // 生成報告
+                const report = `Work Time: ${workTimeFormatted}, Break Time: ${breakTimeFormatted}`;
+                
                 addRecord('Get Off');
+                addRecord(report);
+                
                 startTime = null;
                 isOnBreak = false;
                 totalBreakTime = 0;
+                
                 // 重置按鈕顯示狀態
                 startBreakButton.classList.remove('normal');
                 startBreakButton.classList.add('disabled');
@@ -454,6 +528,8 @@
                 workButton.querySelector('span').textContent = 'Work';
                 getOffButton.classList.remove('normal');
                 getOffButton.classList.add('disabled');
+                resetButton.classList.remove('normal');
+                resetButton.classList.add('disabled');
                 clearInterval(progressInterval); // 停止進度更新
                 updateProgressAndTime(); // 最後更新一次進度
             }
@@ -478,6 +554,8 @@
             startBreakButton.classList.add('disabled');
             getOffButton.classList.remove('normal');
             getOffButton.classList.add('disabled');
+            resetButton.classList.remove('normal');
+            resetButton.classList.add('disabled');
             
             // 重置進度條顯示
             initialMessageElement.style.display = 'block';
