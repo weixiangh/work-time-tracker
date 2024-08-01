@@ -20,10 +20,6 @@
             --secondary-container: #e0d9cc;
             --secondary-container-hover: #cec7b6;
             --on-secondary-container: #493408;
-            --tertiary: #4c6545;
-            --on-tertiary: #ffffff;
-            --tertiary-container: #cdebc2;
-            --on-tertiary-container: #092007;
             --error: #ba1a1a;
             --on-error: #ffffff;
             --error-container: #ffdad6;
@@ -33,13 +29,44 @@
             --on-disable-container: #7c7979;
             --background: #fffdfa;
             --on-background: #1f1c1a;
-            --surface-dim: #e3d9cc;
             --surface: #fff8f2;
             --on-surface: #201b13;
-            --surface-variant: #fbecda;
+            --surface-dim: #e3d9cc;
+            --surface-variant: #bcac9f;
             --on-surface-variant: #4e4639;
             --outline: #7f7667;
             --inverse-primary: #ebc06c;
+            --inverse-surface: #fbecda;
+        }
+
+        .dark-mode {
+            --primary: #ffd680;
+            --on-primary: #402d00;
+            --primary-container: #5a3702;
+            --primary-container-hover: #6c4204;
+            --on-primary-container: #ffeecc;
+            --secondary: #bfaf92;
+            --on-secondary: #3a2f15;
+            --secondary-container: #332c1f;
+            --secondary-container-hover: #494231;
+            --on-secondary-container: #f7e2b6;
+            --error: #e44444;
+            --on-error: #000000;
+            --error-container: #4f0800;
+            --error-container-hover: #650a00;
+            --on-error-container: #ffbdbf;
+            --disable-container: #1f1e1e;
+            --on-disable-container: #868383;
+            --background: #1f1b16;
+            --on-background: #eae0d9;
+            --surface: #191310;
+            --on-surface: #d0c4bc;
+            --surface-dim: #31281b;
+            --surface-variant: #605043;
+            --on-surface-variant: #c7bfb2;
+            --outline: #7f7667;
+            --inverse-primary: #ebc06c;
+            --inverse-surface: #2e210f;
         }
 
         body {
@@ -54,15 +81,20 @@
 
         h1 {
             color: var(--on-surface-variant);
-            font-size: 40px;
+            font-size: 36px;
             font-weight: 600;
             text-align: center;
+        }
+
+        .material-icons {
+            font-size: 18px;
         }
 
         button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            grid-column-gap: 8px;
             font-size: 16px;
             font-weight: 550;
             min-height: 44px;
@@ -115,16 +147,6 @@
             pointer-events: none;
             background-color: var(--disable-container);
             color: var(--on-disable-container);
-        }
-
-        #clearRecords {
-            width: auto;
-        }
-
-
-        .material-icons {
-            font-size: 18px;
-            margin-right: 8px;
         }
 
         #currentTime {
@@ -231,7 +253,86 @@
             justify-content: center;
             padding: 8px 12px;
             border-radius: 8px;
+            background-color: var(--inverse-surface);
+        }
+
+        .theme-switch-wrapper {
+            display: flex;
+            position: relative;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            position: relative;
+            height: 32px;
+            width: 56px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: var(--surface-dim);
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+        }
+
+        .slider:before {
+            background-color: #fff;
+            bottom: 4px;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
             background-color: var(--surface-variant);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .slider.round {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            border-radius: 30px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        .icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 24px;
+            width: 24px;
+            margin: 0;
+            z-index: 1;
+        }
+
+        .sun {
+            color: var(--secondary);
+        }
+
+        .moon {
+            color: var(--surface-variant);
         }
 
         details {
@@ -255,7 +356,8 @@
             display: grid;
             grid-template-columns: 1fr;
             padding: 16px 0;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid var(--surface-variant);
+            
         }
 
         .record-time, .record-action {
@@ -272,6 +374,8 @@
             font-size: 16px;
             font-weight: 400;
             color: var(--on-surface-variant);
+            white-space: pre-line; /* 保留換行符 */
+            line-height: 1.4; /* 增加行高以提高可讀性 */
         }
 
     </style>
@@ -314,12 +418,31 @@
             <span>Reset</span>
         </button>
     </div>
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
+             <input type="checkbox" id="checkbox" />
+             <div class="slider round">
+                <div class="icon">
+                 <i class="material-icons sun">light_mode</i>
+                </div>
+                <div class="icon">
+                 <i class="material-icons moon">dark_mode</i>
+                </div>
+             </div>
+        </label>
+    </div>
     <details id="recordsDetails">
         <summary>Work Records</summary>
-        <button class="button-error"  id="clearRecords" onclick="clearRecords()">
-            <i class="material-icons">delete</i>
-            <span>Clear Records</span>
-        </button>
+        <div>
+            <button class="button-secondary" id="exportData">
+                <i class="material-icons">download</i>
+                <span>Export</span>
+            </button>
+            <button class="button-error"  id="clearRecords" onclick="clearRecords()">
+                <i class="material-icons">delete</i>
+                <span>Clear</span>
+            </button>
+        </div>
         <div id="records"></div>
     </details>
 
@@ -344,6 +467,27 @@
         let breakStartTime = null;
         let totalBreakTime = 0;
         let progressInterval;
+
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+            }    
+        }
+
+        toggleSwitch.addEventListener('change', switchTheme, false);
+
+        // 檢查本地存儲以應用用戶的首選項
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.body.classList[currentTheme === 'dark' ? 'add' : 'remove']('dark-mode');
+            toggleSwitch.checked = currentTheme === 'dark';
+        }
     
         // 使用 requestAnimationFrame 來優化時鐘更新，減少不必要的重繪
         function updateClock() {
@@ -385,7 +529,6 @@
             displayRecords();
         }
 
-        // 修改 displayRecords 函數
         function displayRecords() {
             const recordsDiv = document.getElementById('records');
             recordsDiv.innerHTML = ''; // 清空現有內容
@@ -397,7 +540,8 @@
                 timeSpan.textContent = `${record.date} ${record.time}`;
                 const actionSpan = document.createElement('span');
                 actionSpan.className = 'record-action';
-                actionSpan.textContent = record.type;
+                // 使用 innerHTML 和 <br> 標籤來處理換行
+                actionSpan.innerHTML = record.type.replace(/\n/g, '<br>');
                 div.appendChild(timeSpan);
                 div.appendChild(actionSpan);
                 recordsDiv.appendChild(div);
@@ -511,8 +655,8 @@
                 const workTimeFormatted = formatDuration(totalWorkTime);
                 const breakTimeFormatted = formatDuration(totalBreakTime * 1000);
                 
-                // 生成報告
-                const report = `Work Time: ${workTimeFormatted}, Break Time: ${breakTimeFormatted}`;
+                // 生成報告，使用換行符分隔
+                const report = `Work Time: ${workTimeFormatted}\nBreak Time: ${breakTimeFormatted}`;
                 
                 addRecord('Get Off');
                 addRecord(report);
@@ -582,6 +726,19 @@
             displayRecords();
             alert('All records have been cleared.');
         }
+
+        function exportData() {
+            const dataStr = JSON.stringify(records);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = 'work_records.json';
+
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        document.getElementById('exportData').addEventListener('click', exportData);
     
         // 使用事件委託來處理按鈕點擊，提高效能
         document.body.addEventListener('click', function(event) {
