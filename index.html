@@ -334,13 +334,17 @@
         body.dark-mode .icon.moon {
             opacity: 1;
         }
-
+        
         details {
             margin-top: 20px;
             overflow: hidden;
         }
 
         summary {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-size: 16px;
             font-weight: 400;
             padding: 16px;
@@ -348,8 +352,27 @@
             cursor: pointer;
         }
 
+        summary::before {
+            content: "keyboard_arrow_down";
+            font-family: "Material Icons";
+            font-size: 20px;
+            transition: 0.3s;
+        }
+
+        details[open] > summary::before {
+            transform: rotate(180deg);
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        #summary-title {
+            margin: 0px 4px;
+        }
+
         #records {
-        width: 100%;
+            width: 100%;
         }
 
         .record-item {
@@ -432,7 +455,9 @@
         </label>
     </div>
     <details id="recordsDetails">
-        <summary>Work Records</summary>
+        <summary>
+            <span id="summary-title">Work Records</span>
+        </summary>
         <div>
             <button class="button-secondary" id="exportData">
                 <i class="material-icons">download</i>
