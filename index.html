@@ -17,8 +17,8 @@
             --on-primary-container: #332200;
             --secondary: #6c5c3f;
             --on-secondary: #ffffff;
-            --secondary-container: #e0d9cc;
-            --secondary-container-hover: #cec7b6;
+            --secondary-container: #eae5dc;
+            --secondary-container-hover: #d7d1c1;
             --on-secondary-container: #493408;
             --error: #ba1a1a;
             --on-error: #ffffff;
@@ -47,8 +47,8 @@
             --on-primary-container: #ffeecc;
             --secondary: #bfaf92;
             --on-secondary: #3a2f15;
-            --secondary-container: #332c1f;
-            --secondary-container-hover: #494231;
+            --secondary-container: #231e15;
+            --secondary-container-hover: #3e3828;
             --on-secondary-container: #f7e2b6;
             --error: #e44444;
             --on-error: #000000;
@@ -97,11 +97,11 @@
             grid-column-gap: 8px;
             font-size: 16px;
             font-weight: 550;
-            min-height: 44px;
-            width: 128px;
+            min-height: 48px;
+            width: 120px;
             padding: 12px 16px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             margin: 8px;
             color: var(--secondary);
@@ -109,6 +109,7 @@
         }
 
         .button-primary {
+            width: 256px;
             background-color: var(--primary-container);
             color: var(--on-primary-container);
         }
@@ -149,6 +150,10 @@
             color: var(--on-disable-container);
         }
 
+        #buttonGroup {
+            display: block;
+        }
+
         #currentTime {
             font-size: 16px;
             font-weight: 600;
@@ -165,17 +170,49 @@
             color: var(--on-surface-variant);
         }
 
+        #targetHoursGroup {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            align-items: center;
+            justify-content: center;
+            color: var(--on-surface-variant);
+        }
+
+        #setGoalTime {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 8px;
+        }
+
+        #targetContainer {
+            margin-top: 8px;
+        }
+
+        #targetHours {
+            font-size: 24px;
+            width: 40px;
+            text-align: center;
+            padding: 4px;
+            margin: 0px 4px;
+            border: 0px;
+            border-radius: 4px;
+            background-color: var(--background);
+            color: var(--on-surface);
+        }
+
         #progressBar {
-            width: 100%;
-            --progress-color: var(--primary-container-hover);
-            background-color: var(--surface-dim);
-            margin-top: 32px;
-            margin-bottom: 16px;
-            border-radius: 8px;
-            height: 60px;
+            display: inline-flex;
+            align-items: center;
             position: relative;
             overflow: hidden;
-            opacity: 0.5; /* 初始為半透明 */
+            height: 96px;
+            width: 256px;
+            --progress-color: var(--primary-container-hover);
+            background-color: var(--secondary-container);
+            margin: 16px 8px;
+            border-radius: 8px;
+            transition: 0.3s ease-out;
         }
 
         #progress {
@@ -184,21 +221,9 @@
             background-color: var(--progress-color);
             border-radius: 4px;
             min-width: 2%; /* 設置最小寬度 */
-            transition: opacity 0.5s ease-out; /* 過渡效果 */
+            transition: opacity 0.3s ease-out; /* 過渡效果 */
             display: none; /* 初始為不可見 */
         }
-
-        #initialMessage {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--on-surface-variant);
-            transition: opacity 0.5s ease-out; /* 過渡效果 */
-        }
-
 
         /* 添加進度條動畫 */
         @keyframes pulse {
@@ -210,50 +235,29 @@
         .pulsing {
             animation: pulse 2s infinite;
         }
-
-        #progressPercentage, #currentWorkTime {
+        
+        #progressTextGroup {
             position: absolute;
+            display: none; /* 初始設置為不可見 */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
-            text-align: center;
-            opacity: 0; /* 初始設置為不可見 */
-            transition: opacity 0.5s ease-out; /* 過渡效果 */
+            transition: opacity 0.3s ease-out;
         }
 
         #progressPercentage {
-            top: 14%;
             font-size: 24px;
             color: var(--secondary);
             font-weight: 800;
         }
 
         #currentWorkTime {
-            top: 60%;
             font-size: 14px;
             color: var(--on-surface-variant);
             font-weight: 500;
-        }
-
-        #targetHours {
-            width: 48px;
-            text-align: center;
-            padding: 8px;
-            margin: 0px 8px;
-            border: 2px solid var(--outline);
-            border-radius: 4px;
-            background-color: var(--background);
-            color: var(--on-surface);
-            font-size: 16px;
-        }
-
-        #targetHours-group {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 12px;
-            border-radius: 8px;
-            background-color: var(--inverse-surface);
         }
 
         .theme-switch-wrapper {
@@ -401,27 +405,31 @@
             line-height: 1.4; /* 增加行高以提高可讀性 */
         }
 
+        #currentTime, #clock {
+            display: none; /* 隱藏此元素 */
+        }
+
     </style>
 </head>
 <body>
     <h1>Work Time Tracker</h1>
     <div id="currentTime"><span>Current Time</span></div>
     <div id="clock"></div>
-    <div>
-        <div id="targetHours-group">
-            <label for="targetHours">Today I want to work</label>
-            <input type="number" id="targetHours" min="0" max="24" step="0.5" value="6">
-            <label for="targetHours">hours.</label>
+        <div id="progressBar">
+            <div id="targetHoursGroup">
+                <span id="setGoalTime">Set Goal Time</span>
+                <div id="targetContainer">
+                    <input type="number" id="targetHours" min="0" max="24" step="0.5" value="6">
+                    <span>Hours</span>
+                </div>
+            </div>
+            <div id="progressTextGroup">
+                <span id="progressPercentage"></span>
+                <span id="currentWorkTime"></span>
+            </div>
+            <div id="progress"></div>
         </div>
-    </div>
-    <div id="progressBar">
-        <div id="progress">
-            <span id="progressPercentage"></span>
-            <span id="currentWorkTime"></span>
-        </div>
-        <span id="initialMessage">Click "Work" to start.</span>
-    </div>
-    <div>
+    <div id="buttonGroup">
         <button class="button-primary" id="work" onclick="work()">
             <i class="material-icons">play_arrow</i>
             <span>Work</span>
@@ -431,7 +439,7 @@
             <span>Break</span>
         </button>
     </div>
-    <div>
+    <div id="buttonGroup">
         <button class="button-secondary disabled" id="getOff" onclick="getOff()">
             <i class="material-icons">stop</i>
             <span>Get Off</span>
@@ -458,7 +466,7 @@
         <summary>
             <span id="summary-title">Work Records</span>
         </summary>
-        <div>
+        <div id="buttonGroup">
             <button class="button-secondary" id="exportData">
                 <i class="material-icons">download</i>
                 <span>Export</span>
@@ -476,15 +484,16 @@
         const clockElement = document.getElementById('clock');
         const progressBarElement = document.getElementById('progressBar');
         const progressElement = document.getElementById('progress');
+        const progressTextGroupElement = document.getElementById('progressTextGroup');
         const progressPercentageElement = document.getElementById('progressPercentage');
         const currentWorkTimeElement = document.getElementById('currentWorkTime');
+        const targetHoursGroupElement = document.getElementById('targetHoursGroup');
         const targetHoursInput = document.getElementById('targetHours');
         const workButton = document.getElementById('work');
         const startBreakButton = document.getElementById('startBreak');
         const getOffButton = document.getElementById('getOff');
         const resetButton = document.getElementById('reset');
         const clearRecordsButton = document.getElementById('clearRecords');
-        const initialMessageElement = document.getElementById('initialMessage');
         const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
         const sunElement = document.getElementById('sun');
         const moonElement = document.getElementById('moon');
@@ -496,6 +505,29 @@
         let breakStartTime = null;
         let totalBreakTime = 0;
         let progressInterval;
+
+        function updateButtonVisibility(state) {
+            switch(state) {
+                case 'initial':
+                    workButton.style.display = 'inline-flex';
+                    startBreakButton.style.display = 'none';
+                    getOffButton.style.display = 'none';
+                    resetButton.style.display = 'none';
+                    break;
+                case 'working':
+                    workButton.style.display = 'none';
+                    startBreakButton.style.display = 'inline-flex';
+                    getOffButton.style.display = 'inline-flex';
+                    resetButton.style.display = 'inline-flex';
+                    break;
+                case 'break':
+                    workButton.style.display = 'inline-flex';
+                    startBreakButton.style.display = 'none';
+                    getOffButton.style.display = 'inline-flex';
+                    resetButton.style.display = 'inline-flex';
+                    break;
+            }
+        }
 
         function switchTheme(e) {
             if (e.target.checked) {
@@ -578,17 +610,15 @@
         // 優化進度更新函數，減少不必要的計算
         function updateProgressAndTime() {
             if (!startTime) {
-                initialMessageElement.style.display = 'block';
-                progressBarElement.style.opacity = '0.5';
+                targetHoursGroupElement.style.display = 'block';
+                progressBarElement.style.width = '256px'; // 進度條初始寬度
                 progressElement.style.display = 'none'; // 設置初始不可見
-                progressPercentageElement.style.opacity = '0';
-                currentWorkTimeElement.style.opacity = '0';
+                progressTextGroupElement.style.display = 'none';
                 return;
             }
             
-            initialMessageElement.style.display = 'none';
-            progressPercentageElement.style.opacity = '1';
-            currentWorkTimeElement.style.opacity = '1';
+            targetHoursGroupElement.style.display = 'none';
+            progressTextGroupElement.style.display = 'flex';
             
             const now = new Date();
             let elapsedTime = now - startTime - (totalBreakTime * 1000);
@@ -613,8 +643,10 @@
             // 脈動效果
             if (percentage < 5) {
                 progressElement.classList.add('pulsing');
+                progressTextGroupElement.classList.add('pulsing');
             } else {
                 progressElement.classList.remove('pulsing');
+                progressTextGroupElement.classList.remove('pulsing');
             }
 
             // 更流暢的動畫效果
@@ -644,13 +676,13 @@
                 getOffButton.classList.add('normal');
                 resetButton.classList.remove('disabled');
                 resetButton.classList.add('normal');
-                initialMessageElement.style.display = 'none';
+                targetHoursGroupElement.style.display = 'none';
+                progressBarElement.style.width = '100%'; // 進度條寬度延展
                 progressElement.style.display = 'block'; // 設置初始可見
                 progressElement.style.width = '2%'; // 設置初始可見寬度
-                progressPercentageElement.style.opacity = '1';
-                currentWorkTimeElement.style.opacity = '1';
-                progressBarElement.style.opacity = '1';
+                progressTextGroupElement.style.display = 'flex';
                 updateProgressAndTime();
+                updateButtonVisibility('working');
                 progressInterval = setInterval(updateProgressAndTime, 1000);
             }
         }
@@ -665,6 +697,7 @@
                 workButton.classList.add('normal');
                 addRecord('Start Break');
                 updateProgressAndTime();
+                updateButtonVisibility('break');
             }
         }
     
@@ -704,6 +737,7 @@
                 resetButton.classList.add('disabled');
                 clearInterval(progressInterval); // 停止進度更新
                 updateProgressAndTime(); // 最後更新一次進度
+                updateButtonVisibility('initial');
             }
         }
     
@@ -730,10 +764,9 @@
             resetButton.classList.add('disabled');
             
             // 重置進度條顯示
-            initialMessageElement.style.display = 'block';
+            targetHoursGroupElement.style.display = 'block';
             progressElement.style.width = '0%';
-            progressPercentageElement.style.opacity = '0';
-            currentWorkTimeElement.style.opacity = '0';
+            progressTextGroupElement.style.display = 'none';
             progressPercentageElement.textContent = '0.0%';
             currentWorkTimeElement.textContent = '00:00:00';
     
@@ -745,6 +778,7 @@
     
             // 更新顯示
             updateProgressAndTime();
+            updateButtonVisibility('initial');
         }
     
         function clearRecords() {
@@ -800,6 +834,7 @@
         requestAnimationFrame(updateClock);
         displayRecords();
         updateProgressAndTime();
+        updateButtonVisibility('initial');
     
         // 移除按鈕上的 onclick 屬性
         workButton.removeAttribute('onclick');
