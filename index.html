@@ -96,7 +96,7 @@
             justify-content: center;
             grid-column-gap: 8px;
             font-size: 16px;
-            font-weight: 550;
+            font-weight: 600;
             min-height: 48px;
             width: 120px;
             padding: 12px 16px;
@@ -110,13 +110,13 @@
 
         .button-primary {
             width: 256px;
+            min-height: 64px;
+            font-size: 24px;
             background-color: var(--primary-container);
-            color: var(--on-primary-container);
         }
 
         .button-secondary {
             background-color: var(--secondary-container);
-            color: var(--on-secondary-container);
         }
 
         .button-error {
@@ -186,7 +186,7 @@
             grid-column-gap: 8px;
             font-size: 20px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin: 4px 0;
         }
 
         #setGoalTime::before {
@@ -534,11 +534,11 @@
     </div>
     <div id="buttonGroup">
         <button class="button-primary" id="work" onclick="work()">
-            <i class="material-icons">play_arrow</i>
+            <i class="material-icons" style="font-size: 24px;">play_arrow</i>
             <span>Work</span>
         </button>
         <button class="button-primary disabled" id="startBreak" onclick="startBreak()">
-            <i class="material-icons">pause</i>
+            <i class="material-icons" style="font-size: 24px;">pause</i>
             <span>Break</span>
         </button>
     </div>
@@ -548,7 +548,7 @@
             <span>Get Off</span>
         </button>
         <button class="button-error disabled" id="reset" onclick="reset()">
-            <i class="material-icons">refresh</i>
+            <i class="material-icons" style="font-weight: 600;">refresh</i>
             <span>Reset</span>
         </button>
     </div>
