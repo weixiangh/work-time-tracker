@@ -336,7 +336,7 @@
         #progressPercentage {
             font-size: 32px;
             font-weight: 600;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
             color: var(--secondary);
         }
 
@@ -619,6 +619,9 @@
         const separatorM = targetTime.querySelector('.separatorM');
         const blinkingCursor = document.getElementById('blinkingCursor');
 
+        hoursSpan = (hoursTensSpan.textContent) * 10 + (hoursUnitsSpan.textContent) ;
+        minutesSpan = (minutesTensSpan.textContent) * 10 + (minutesUnitsSpan.textContent) ;
+
         let isEditing = false;
 
         progressBarElement.addEventListener('click', () => {
@@ -864,7 +867,7 @@
             const minutes = Math.floor((elapsedHours * 60) % 60);
             const seconds = Math.floor((elapsedHours * 3600) % 60);
             
-            currentWorkTimeElement.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+            currentWorkTimeElement.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)} / ${hoursSpan}:${minutesSpan}:00`;
             
             // 脈動效果
             if (percentage < 5) {
