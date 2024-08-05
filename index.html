@@ -176,29 +176,44 @@
             margin: auto;
             align-items: center;
             justify-content: center;
-            color: var(--on-surface-variant);
+            color: var(--secondary);
         }
 
         #setGoalTime {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            grid-column-gap: 8px;
             font-size: 20px;
             font-weight: 600;
-            margin: 8px;
+            margin-bottom: 4px;
+        }
+
+        #setGoalTime::before {
+            content: "alarm";
+            font-family: "Material Icons";
+            font-size: 20px;
         }
 
         #targetContainer {
             margin-top: 8px;
         }
 
+        #targetContainer span {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
         #targetHours {
             font-size: 24px;
-            width: 40px;
+            width: 64px;
             text-align: center;
             padding: 4px;
             margin: 0px 4px;
             border: 0px;
             border-radius: 4px;
-            background-color: var(--background);
-            color: var(--on-surface);
+            color: var(--secondary);
+            background-color: var(--surface);
         }
 
         #progressBar {
@@ -206,11 +221,11 @@
             align-items: center;
             position: relative;
             overflow: hidden;
-            height: 96px;
+            height: 128px;
             width: 256px;
             --progress-color: var(--primary-container-hover);
             background-color: var(--secondary-container);
-            margin: 16px 8px;
+            margin: 8px 0;
             border-radius: 8px;
             transition: 0.3s ease-out;
         }
@@ -235,7 +250,7 @@
         .pulsing {
             animation: pulse 2s infinite;
         }
-        
+
         #progressTextGroup {
             position: absolute;
             display: none; /* 初始設置為不可見 */
@@ -249,13 +264,14 @@
         }
 
         #progressPercentage {
-            font-size: 24px;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 2px;
             color: var(--secondary);
-            font-weight: 800;
         }
 
         #currentWorkTime {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--on-surface-variant);
             font-weight: 500;
         }
@@ -415,20 +431,22 @@
     <h1>Work Time Tracker</h1>
     <div id="currentTime"><span>Current Time</span></div>
     <div id="clock"></div>
-        <div id="progressBar">
-            <div id="targetHoursGroup">
-                <span id="setGoalTime">Set Goal Time</span>
-                <div id="targetContainer">
-                    <input type="number" id="targetHours" min="0" max="24" step="0.5" value="6">
-                    <span>Hours</span>
-                </div>
+    <div id="progressBar">
+        <div id="targetHoursGroup">
+            <div id="setGoalTime">
+                <span>Set Goal Time</span>
             </div>
-            <div id="progressTextGroup">
-                <span id="progressPercentage"></span>
-                <span id="currentWorkTime"></span>
+            <div id="targetContainer">
+                <input type="number" id="targetHours" min="0" max="24" step="0.5" value="6">
+                <span>hours</span>
             </div>
-            <div id="progress"></div>
         </div>
+        <div id="progressTextGroup">
+            <span id="progressPercentage"></span>
+            <span id="currentWorkTime"></span>
+        </div>
+        <div id="progress"></div>
+    </div>
     <div id="buttonGroup">
         <button class="button-primary" id="work" onclick="work()">
             <i class="material-icons">play_arrow</i>
