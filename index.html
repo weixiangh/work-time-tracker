@@ -197,23 +197,93 @@
 
         #targetContainer {
             margin-top: 8px;
+            position: relative;
         }
 
-        #targetContainer span {
-            font-size: 16px;
+        #targetTime {
+            display: inline-flex;
+            align-items: baseline;
+            width: 144px;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--secondary);
+            cursor: text;
+            opacity: 1;
+        }
+
+        .separatorH , .separatorM {
+            width: 24px;
+            font-size: 20px;
             font-weight: 600;
         }
 
-        #targetHours {
-            font-size: 24px;
-            width: 64px;
-            text-align: center;
-            padding: 4px;
-            margin: 0px 4px;
-            border: 0px;
-            border-radius: 4px;
-            color: var(--secondary);
-            background-color: var(--surface);
+        .timeContainer {
+            display: flex;
+            justify-content: flex-end;
+            width: 48px;
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .hoursTens, .hoursUnits, .minutesTens, .minutesUnits {
+            display: inline;
+        }
+
+        #targetInputContainer {
+            position: absolute;
+            display: inline-flex;
+            align-items:baseline;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 144px;
+        }
+
+        #targetInput {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: default;
+        }
+
+        #targetInputBlock {
+            display: flex;
+            width: 120px;
+            visibility: hidden;
+        }
+
+        @-webkit-keyframes blink {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @-moz-keyframes blink {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes blink {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        #blinkingCursor {
+            width: 2px;
+            height: 36px;
+            background-color: var(--secondary);
+            -webkit-animation: blink 1s step-end infinite;
+            -moz-animation: blink 1s step-end infinite;
+            animation: blink 1s step-end infinite;
+        }
+
+        #targetTime .dim {
+            opacity: 0.5;
         }
 
         #progressBar {
@@ -437,8 +507,23 @@
                 <span>Set Goal Time</span>
             </div>
             <div id="targetContainer">
-                <input type="number" id="targetHours" min="0" max="24" step="0.5" value="6">
-                <span>hours</span>
+                <div id="targetTime">
+                    <div class="timeContainer">
+                        <span class="hoursTens">0</span>
+                        <span class="hoursUnits">6</span>
+                    </div>
+                    <span class="separatorH">h</span>
+                    <div class="timeContainer">
+                        <span class="minutesTens">0</span>
+                        <span class="minutesUnits">0</span>
+                    </div>
+                    <span class="separatorM">m</span>
+                </div>
+                <div id="targetInputContainer">
+                    <input type="text" id="targetInput" style="display: none;">
+                    <div id="targetInputBlock"></div>
+                    <div id="blinkingCursor" style="display: none;"></div>
+                </div>
             </div>
         </div>
         <div id="progressTextGroup">
@@ -506,7 +591,6 @@
         const progressPercentageElement = document.getElementById('progressPercentage');
         const currentWorkTimeElement = document.getElementById('currentWorkTime');
         const targetHoursGroupElement = document.getElementById('targetHoursGroup');
-        const targetHoursInput = document.getElementById('targetHours');
         const workButton = document.getElementById('work');
         const startBreakButton = document.getElementById('startBreak');
         const getOffButton = document.getElementById('getOff');
@@ -516,13 +600,136 @@
         const sunElement = document.getElementById('sun');
         const moonElement = document.getElementById('moon');
 
-    
         let records = JSON.parse(localStorage.getItem('workRecords')) || [];
         let startTime = null;
         let isOnBreak = false;
         let breakStartTime = null;
         let totalBreakTime = 0;
         let progressInterval;
+
+        // targetContainer
+        const targetContainer = document.getElementById('targetContainer');
+        const targetTime = document.getElementById('targetTime');
+        const targetInput = document.getElementById('targetInput');
+        const hoursTensSpan = targetTime.querySelector('.hoursTens');
+        const hoursUnitsSpan = targetTime.querySelector('.hoursUnits');
+        const minutesTensSpan = targetTime.querySelector('.minutesTens');
+        const minutesUnitsSpan = targetTime.querySelector('.minutesUnits');
+        const separatorH = targetTime.querySelector('.separatorH');
+        const separatorM = targetTime.querySelector('.separatorM');
+        const blinkingCursor = document.getElementById('blinkingCursor');
+
+        let isEditing = false;
+
+        progressBarElement.addEventListener('click', () => {
+            if (!isEditing) {
+                isEditing = true;
+                setAllElementsToSemiTransparent(); // 將所有元素更改為半透明狀態
+                targetInput.style.display = 'block';
+                targetInput.focus();
+                targetInput.value = "" ;
+                blinkingCursor.style.display = 'block';
+            }
+        });
+
+        targetInput.addEventListener('input', (e) => {
+            setAllElementsToSemiTransparent(); // 將所有元素更改為半透明狀態
+            setAllElementsToZero(); // 將所有數值規零
+
+            let value = e.target.value.replace(/\D/g, '').padStart(4, '0').slice(-4);
+            let hours = value.slice(0, 2);
+            let minutes = value.slice(2, 4);
+            
+            // 根據輸入的數字數量設置透明度
+            if (e.target.value.length >= 1) {
+                minutesUnitsSpan.style.opacity = '1';
+                targetTime.querySelector('.separatorM').style.opacity = '1';
+            }
+            if (e.target.value.length >= 2) {
+                minutesTensSpan.style.opacity = '1';
+            }
+            if (e.target.value.length >= 3) {
+                hoursUnitsSpan.style.opacity = '1';
+                targetTime.querySelector('.separatorH').style.opacity = '1';
+            }
+            if (e.target.value.length >= 4) {
+                hoursTensSpan.style.opacity = '1';
+            }
+            
+            hoursTensSpan.textContent = hours[0];
+            hoursUnitsSpan.textContent = hours[1];
+            minutesTensSpan.textContent = minutes[0];
+            minutesUnitsSpan.textContent = minutes[1];
+            
+            updateWorkButtonState(hours, minutes);
+            // Update hoursSpan & minutesSpan for other functions
+            hoursSpan = (hoursTensSpan.textContent) * 10 + (hoursUnitsSpan.textContent) ;
+            minutesSpan = (minutesTensSpan.textContent) * 10 + (minutesUnitsSpan.textContent) ;
+        });
+                
+        targetInput.addEventListener('blur', () => {
+            isEditing = false;
+            targetInput.style.display = 'none';
+            blinkingCursor.style.display = 'none';
+            setAllElementsToVisible() // 將所有元素更改為正常可見狀態
+
+            // Update targetHours for other functions
+            targetHours = parseFloat(hoursSpan) + parseFloat(minutesSpan) / 60;
+        });
+
+        // 此功能將所有元素數值規零
+        function setAllElementsToZero() {
+            const elements = [
+                hoursTensSpan,
+                hoursUnitsSpan,
+                minutesTensSpan,
+                minutesUnitsSpan,
+            ];
+
+            elements.forEach(element => {
+                element.textContent = '0';
+            });
+        }
+
+        // 此功能將所有元素更改為半透明狀態
+        function setAllElementsToSemiTransparent() {
+            const elements = [
+                hoursTensSpan,
+                hoursUnitsSpan,
+                separatorH,
+                minutesTensSpan,
+                minutesUnitsSpan,
+                separatorM,
+            ];
+
+            elements.forEach(element => {
+                element.style.opacity = '0.5';
+            });
+        }
+
+        // 此功能將所有元素更改為正常可見狀態
+        function setAllElementsToVisible() {
+            const elements = [
+                hoursTensSpan,
+                hoursUnitsSpan,
+                separatorH,
+                minutesTensSpan,
+                minutesUnitsSpan,
+                separatorM,
+            ];
+
+            elements.forEach(element => {
+                element.style.opacity = '1';
+            });
+        }
+
+        function updateWorkButtonState(hours, minutes) {
+            const isValid = parseInt(hours) <= 99 && parseInt(minutes) <= 59;
+            workButton.disabled = !isValid;
+            workButton.classList.toggle('disabled', !isValid);
+        }
+        // targetContainer
+
 
         function updateButtonVisibility(state) {
             switch(state) {
@@ -643,8 +850,9 @@
             if (isOnBreak) {
                 elapsedTime -= (now - breakStartTime);
             }
+
             const elapsedHours = elapsedTime / 3600000;
-            const targetHours = parseFloat(targetHoursInput.value);
+            const targetHours = parseFloat(hoursSpan) + parseFloat(minutesSpan) / 60;
             let percentage = Math.min((elapsedHours / targetHours) * 100, 100);
             
             progressElement.style.width = `${percentage}%`;
