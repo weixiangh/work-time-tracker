@@ -1,0 +1,463 @@
+:root {
+    /* 主色 */
+    --primary: #68583b;
+    --on-primary: #ffffff;
+
+    /* 次要色 */
+    --secondary: #938762;
+    --on-secondary: #ffffff;
+
+    /* 主要按鈕 */
+    --primary-button: #fddaa5;
+    --primary-button-hover: #f0c775;
+    --on-primary-button: #332200;
+
+    /* 次要按鈕 */
+    --secondary-button: #eae5dc;
+    --secondary-button-hover: #d7d1c1;
+    --on-secondary-button: #493408;
+    
+    /* 錯誤色 */
+    --error: #ba1a1a;
+    --on-error: #ffffff;
+    --error-button: #ffdad6;
+    --error-button-hover: #f1bfbb;
+    --on-error-button: #410002;
+    
+    /* 禁用狀態 */
+    --disable-button: #e1e0e0;
+    --on-disable-button: #7c7979;
+    
+    /* 背景和表面色 */
+    --background: #fffdfa;
+    --on-background: #1f1c1a;
+    --surface: #fff8f2;
+    --on-surface: #201b13;
+    --surface-dim: #e3d9cc;
+    --surface-variant: #bcac9f;
+    --on-surface-variant: #4e4639;
+    
+    /* 其他色 */
+    --outline: #7f7667;
+    --inverse-primary: #ebc06c;
+    --inverse-surface: #fbecda;
+}
+
+.dark-mode {
+    /* 主色 */
+    --primary: #bfaf92;
+    --on-primary: #3a2f15;
+                
+    /* 次要色 */
+    --secondary: #ffd680;
+    --on-secondary: #402d00;
+
+    /* 主要按鈕 */
+    --primary-button: #5a3702;
+    --primary-button-hover: #6c4204;
+    --on-primary-button: #ffeecc;
+
+    /* 次要按鈕 */
+    --secondary-button: #231e15;
+    --secondary-button-hover: #3e3828;
+    --on-secondary-button: #f7e2b6;
+
+    /* 錯誤色 */
+    --error: #e44444;
+    --on-error: #000000;
+    --error-button: #4f0800;
+    --error-button-hover: #650a00;
+    --on-error-button: #ffbdbf;
+                
+    /* 禁用狀態 */
+    --disable-button: #1f1e1e;
+    --on-disable-button: #868383;
+                
+    /* 背景和表面色 */
+    --background: #1f1b16;
+    --on-background: #eae0d9;
+    --surface: #191310;
+    --on-surface: #d0c4bc;
+    --surface-dim: #31281b;
+    --surface-variant: #605043;
+    --on-surface-variant: #c7bfb2;
+
+    /* 其他色 */
+    --outline: #7f7667;
+    --inverse-primary: #ebc06c;
+    --inverse-surface: #2e210f;
+}
+
+body {
+    font-family: "Inter", Arial, sans-serif;
+    background-color: var(--surface);
+    color: var(--on-surface);
+    max-width: 512px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: var(--on-surface-variant);
+    font-size: 36px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.material-icons {
+    font-size: 18px;
+}
+
+/* 按鈕樣式 */
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    min-height: 48px;
+    width: 120px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 8px;
+    color: var(--primary);
+    transition: background-color 0.3s ease;
+}
+
+.button-primary {
+    width: 256px;
+    min-height: 64px;
+    font-size: 24px;
+    background-color: var(--primary-button);
+}
+
+.button-secondary {
+    background-color: var(--secondary-button);
+}
+
+.button-error {
+    background-color: var(--error-button);
+}
+
+@media (hover: hover) {
+    .button-primary:hover { background-color: var(--primary-button-hover); }
+    .button-secondary:hover { background-color: var(--secondary-button-hover); }
+    .button-error:hover { background-color: var(--error-button-hover); }
+}
+
+button.normal { pointer-events: auto; }
+
+button.disabled {
+    pointer-events: none;
+    background-color: var(--disable-button);
+    color: var(--on-disable-button);
+}
+
+#buttonGroup { display: block; }
+
+#currentTime, #clock {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    text-align: center;
+    color: var(--on-surface-variant);
+}
+
+#clock { font-size: 24px; margin-bottom: 20px; }
+
+/* 目標時間設置相關樣式 */
+#targetHoursGroup {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+}
+
+#setGoalTime {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 4px 0;
+    margin-right: 2px;
+    color: var(--secondary);
+}
+
+#setGoalTime::before {
+    content: "alarm";
+    font-family: "Material Icons";
+    font-size: 20px;
+    padding-bottom: 1px;
+}
+
+#targetContainer {
+    margin: 8px;
+    position: relative;
+}
+
+#targetTime {
+    display: inline-flex;
+    align-items: baseline;
+    width: 168px;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary);
+    cursor: text;
+}
+
+.separatorH, .separatorM {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 4px;
+    min-width: 24px;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.timeContainer {
+    display: flex;
+    justify-content: flex-end;
+    width: 56px;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 40px;
+    padding: 0 2px;
+    border-bottom: 2px solid var(--secondary);
+}
+
+#targetInputContainer {
+    position: absolute;
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    width: 168px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#targetInput {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: default;
+}
+
+#targetInputBlock {
+    display: flex;
+    width: 24px;
+    margin-left: 2px;
+    visibility: hidden;
+}
+
+/* 光標閃爍動畫 */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+#blinkingCursor {
+    width: 2px;
+    height: 34px;
+    margin-bottom: 2px;
+    background-color: var(--primary);
+    animation: blink 1s step-end infinite;
+}
+
+#targetTime .dim { opacity: 0.5; }
+
+/* 進度條相關樣式 */
+#progressBar {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    height: 128px;
+    width: 256px;
+    --progress-color: var(--primary-button-hover);
+    background-color: var(--secondary-button);
+    margin: 8px 0;
+    border-radius: 8px;
+    transition: 0.3s ease-out;
+}
+
+#progress {
+    width: 0%;
+    height: 100%;
+    background-color: var(--progress-color);
+    border-radius: 4px;
+    min-width: 2%;
+    transition: opacity 0.3s ease-out;
+    display: none;
+}
+
+/* 進度脈動動畫 */
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+.pulsing { animation: pulse 2s infinite; }
+
+#progressTextGroup {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    margin-bottom: 4px;
+    transition: opacity 0.3s ease-out;
+}
+
+#progressPercentage {
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    color: var(--primary);
+}
+
+#currentWorkTime {
+    font-size: 16px;
+    color: var(--on-surface-variant);
+    font-weight: 500;
+}
+
+/* 主題切換開關樣式 */
+.theme-switch-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.theme-switch {
+    display: inline-block;
+    position: relative;
+    height: 32px;
+    width: 56px;
+}
+
+.theme-switch input { display: none; }
+
+.slider {
+    background-color: var(--surface-dim);
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 24px;
+}
+
+.slider:before {
+    background-color: var(--surface);
+    bottom: 4px;
+    content: "";
+    height: 24px;
+    width: 24px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider:before { transform: translateX(24px); }
+
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 24px;
+    width: 24px;
+    margin: 0;
+    z-index: 1;
+    color: var(--primary);
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+}
+
+body:not(.dark-mode) .icon.sun,
+body.dark-mode .icon.moon { opacity: 0.8; }
+
+/* 記錄詳情樣式 */
+details {
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+summary {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 16px;
+    color: var(--secondary);
+    cursor: pointer;
+}
+
+summary::before {
+    content: "keyboard_arrow_down";
+    font-family: "Material Icons";
+    font-size: 20px;
+    transition: 0.3s;
+}
+
+details[open] > summary::before { transform: rotate(180deg); }
+
+summary::-webkit-details-marker { display: none; }
+
+#summary-title { margin: 0px 4px; }
+
+#records { 
+    width: 100%; 
+    margin-top: 8px;
+}
+
+.record-item {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 16px 0;
+    border-bottom: 0.5px solid var(--secondary);
+}
+
+.record-time, .record-action { padding: 4px 0; }
+
+.record-time {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.record-action {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--on-surface-variant);
+    white-space: pre-line;
+    line-height: 1.5;
+}
+
+#currentTime, #clock { display: none; 
+}
