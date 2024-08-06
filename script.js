@@ -36,8 +36,8 @@ let isEditing = false;
 let originalInput = '';
 let targetHours = 0;
 
-hoursSpan = (hoursTensSpan.textContent) * 10 + (hoursUnitsSpan.textContent) * 1 ;
-minutesSpan = (minutesTensSpan.textContent) * 10 + (minutesUnitsSpan.textContent) * 1 ;
+let hoursSpan = parseInt(hoursTensSpan.textContent) * 10 + parseInt(hoursUnitsSpan.textContent);
+let minutesSpan = parseInt(minutesTensSpan.textContent) * 10 + parseInt(minutesUnitsSpan.textContent);
 
 // 主題切換功能
 function switchTheme(e) {
@@ -135,10 +135,11 @@ function updateProgressAndTime() {
     }
 
     const elapsedHours = elapsedTime / 3600000;
+    const targetHours = parseFloat(hoursSpan) + parseFloat(minutesSpan) / 60;
     let percentage = Math.min((elapsedHours / targetHours) * 100, 100);
     
     updateProgressBar(percentage);
-    updateTimeDisplay(elapsedHours);
+    updateTimeDisplay(elapsedHours, targetHours);
     
     requestAnimationFrame(updateProgressAndTime);
 }
@@ -165,19 +166,13 @@ function updateProgressBar(percentage) {
     }
 }
 
-// 更新時間顯示
-function updateTimeDisplay(elapsedHours) {
-    const formatTime = (time) => time.toString().padStart(2, '0');
-    const hours = Math.floor(elapsedHours);
-    const minutes = Math.floor((elapsedHours * 60) % 60);
-    const seconds = Math.floor((elapsedHours * 3600) % 60);
-    
-    currentWorkTimeElement.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)} / ${formatTime(Math.floor(targetHours))}:${formatTime(Math.round((targetHours % 1) * 60))}:00`;
-}
-
 // 開始工作
 function work() {
     if (!startTime || isOnBreak) {
+        if (originalInput === '') {
+            // 若無輸入數值，使用預設值 01:00
+            originalInput = '0100';
+        }
         updateTargetTime();
         if (isOnBreak) {
             endBreak();
@@ -193,11 +188,25 @@ function work() {
 // 更新目標時間
 function updateTargetTime() {
     let totalMinutes = parseInt(originalInput.slice(0, 2)) * 60 + parseInt(originalInput.slice(2, 4));
-    totalMinutes = Math.min(totalMinutes, 99 * 60 + 60);
+    totalMinutes = Math.min(totalMinutes, 99 * 60 + 60); // 限制最大時間為 99 小時 60 分鐘
 
-    targetHours = totalMinutes / 60;
+    let hours = Math.floor(totalMinutes / 60);
+    let minutes = totalMinutes % 60;
+
+    hoursSpan = hours;
+    minutesSpan = minutes;
 
     updateTimeDisplay();
+}
+
+// 更新時間顯示
+function updateTimeDisplay(elapsedHours, targetHours) {
+    const formatTime = (time) => time.toString().padStart(2, '0');
+    const hours = Math.floor(elapsedHours);
+    const minutes = Math.floor((elapsedHours * 60) % 60);
+    const seconds = Math.floor((elapsedHours * 3600) % 60);
+    
+    currentWorkTimeElement.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)} / ${formatTime(hoursSpan)}:${formatTime(minutesSpan)}:00`;
 }
 
 // 結束休息
