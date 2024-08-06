@@ -8,14 +8,17 @@
     <link rel="icon" href="/work-time-tracker/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/work-time-tracker/apple-touch-icon.png">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #79590c;
+            --primary: #68583b;
             --on-primary: #ffffff;
             --primary-container: #fddaa5;
             --primary-container-hover: #f0c775;
             --on-primary-container: #332200;
-            --secondary: #6c5c3f;
+            --secondary: #9b906f;
             --on-secondary: #ffffff;
             --secondary-container: #eae5dc;
             --secondary-container-hover: #d7d1c1;
@@ -40,13 +43,13 @@
         }
 
         .dark-mode {
-            --primary: #ffd680;
-            --on-primary: #402d00;
+            --primary: #bfaf92;
+            --on-primary: #3a2f15;
             --primary-container: #5a3702;
             --primary-container-hover: #6c4204;
             --on-primary-container: #ffeecc;
-            --secondary: #bfaf92;
-            --on-secondary: #3a2f15;
+            --secondary: #ffd680;
+            --on-secondary: #402d00;
             --secondary-container: #231e15;
             --secondary-container-hover: #3e3828;
             --on-secondary-container: #f7e2b6;
@@ -70,10 +73,10 @@
         }
 
         body {
-            font-family: 'SF Pro Display', Arial, sans-serif;
+            font-family: "Inter", Arial, sans-serif;
             background-color: var(--surface);
             color: var(--on-surface);
-            max-width: 500px;
+            max-width: 512px;
             margin: 0 auto;
             padding: 20px;
             text-align: center;
@@ -95,6 +98,7 @@
             align-items: center;
             justify-content: center;
             grid-column-gap: 8px;
+            font-family: "Inter", Arial, sans-serif;
             font-size: 16px;
             font-weight: 600;
             min-height: 48px;
@@ -104,8 +108,8 @@
             border-radius: 8px;
             cursor: pointer;
             margin: 8px;
-            color: var(--secondary);
-            transition: color, background-color 0.3s ease;
+            color: var(--primary);
+            transition: 0.3s ease;
         }
 
         .button-primary {
@@ -176,7 +180,7 @@
             margin: auto;
             align-items: center;
             justify-content: center;
-            color: var(--secondary);
+            color: var(--primary);
         }
 
         #setGoalTime {
@@ -187,42 +191,51 @@
             font-size: 20px;
             font-weight: 600;
             margin: 4px 0;
+            margin-right: 2px;
+            color: var(--outline);
         }
 
         #setGoalTime::before {
             content: "alarm";
             font-family: "Material Icons";
             font-size: 20px;
+            padding-bottom: 1px;
         }
 
         #targetContainer {
-            margin-top: 8px;
+            margin: 8px;
             position: relative;
         }
 
         #targetTime {
             display: inline-flex;
             align-items: baseline;
-            width: 160px;
+            width: 168px;
             font-size: 24px;
             font-weight: 600;
-            color: var(--secondary);
+            color: var(--primary);
             cursor: text;
             opacity: 1;
         }
 
         .separatorH , .separatorM {
-            width: 28px;
-            font-size: 24px;
+            display: flex;
+            justify-content: flex-start;
+            margin-left: 4px;
+            min-width: 24px;
+            font-size: 28px;
             font-weight: 600;
         }
 
         .timeContainer {
             display: flex;
             justify-content: flex-end;
-            width: 52px;
+            width: 56px;
             font-size: 40px;
-            font-weight: 600;
+            font-weight: 500;
+            line-height: 40px;
+            padding: 0 2px;
+            border-bottom: 2px solid var(--secondary);
         }
 
         .hoursTens, .hoursUnits, .minutesTens, .minutesUnits {
@@ -232,11 +245,12 @@
         #targetInputContainer {
             position: absolute;
             display: inline-flex;
-            align-items:baseline;
+            justify-content: flex-end;
+            align-items: baseline;
+            width: 168px;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: 160px;
         }
 
         #targetInput {
@@ -251,32 +265,34 @@
 
         #targetInputBlock {
             display: flex;
-            width: 132px;
+            width: 24px;
+            margin-left: 2px;
             visibility: hidden;
         }
 
         @-webkit-keyframes blink {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         @-moz-keyframes blink {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         @keyframes blink {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         #blinkingCursor {
             width: 2px;
-            height: 36px;
-            background-color: var(--secondary);
+            height: 34px;
+            margin-bottom: 2px;
+            background-color: var(--primary);
             -webkit-animation: blink 1s step-end infinite;
             -moz-animation: blink 1s step-end infinite;
             animation: blink 1s step-end infinite;
@@ -310,7 +326,18 @@
             display: none; /* 初始為不可見 */
         }
 
-        /* 添加進度條動畫 */
+        @-webkit-keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        @-moz-keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
         @keyframes pulse {
             0% { opacity: 0.6; }
             50% { opacity: 1; }
@@ -330,14 +357,15 @@
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
+            margin-bottom: 4px;
             transition: opacity 0.3s ease-out;
         }
 
         #progressPercentage {
             font-size: 48px;
             font-weight: 600;
-            margin-bottom: 4px;
-            color: var(--secondary);
+            margin-bottom: 2px;
+            color: var(--primary);
         }
 
         #currentWorkTime {
@@ -415,7 +443,7 @@
             width: 24px;
             margin: 0;
             z-index: 1;
-            color: var(--secondary);
+            color: var(--primary);
             opacity: 0.2;
             transition: opacity 0.3s ease;
         }
@@ -438,7 +466,7 @@
             font-size: 16px;
             font-weight: 400;
             padding: 16px;
-            color: var(--on-surface-variant);
+            color: var(--secondary);
             cursor: pointer;
         }
 
@@ -521,8 +549,8 @@
                 </div>
                 <div id="targetInputContainer">
                     <input type="text" id="targetInput" style="display: none;">
-                    <div id="targetInputBlock"></div>
                     <div id="blinkingCursor" style="display: none;"></div>
+                    <div id="targetInputBlock"></div>
                 </div>
             </div>
         </div>
@@ -706,7 +734,7 @@
             ];
 
             elements.forEach(element => {
-                element.style.opacity = '0.5';
+                element.style.opacity = '0.4';
             });
         }
 
@@ -867,7 +895,7 @@
             const minutes = Math.floor((elapsedHours * 60) % 60);
             const seconds = Math.floor((elapsedHours * 3600) % 60);
             
-            currentWorkTimeElement.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)} / ${hoursSpan}:${minutesSpan}:00`;
+            currentWorkTimeElement.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)} / ${formatTime(hoursSpan)}:${formatTime(minutesSpan)}:00`;
             
             // 脈動效果
             if (percentage < 5) {
