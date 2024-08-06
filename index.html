@@ -18,7 +18,7 @@
             --primary-container: #fddaa5;
             --primary-container-hover: #f0c775;
             --on-primary-container: #332200;
-            --secondary: #9b906f;
+            --secondary: #938762;
             --on-secondary: #ffffff;
             --secondary-container: #eae5dc;
             --secondary-container-hover: #d7d1c1;
@@ -192,7 +192,7 @@
             font-weight: 600;
             margin: 4px 0;
             margin-right: 2px;
-            color: var(--outline);
+            color: var(--secondary);
         }
 
         #setGoalTime::before {
@@ -538,7 +538,7 @@
                 <div id="targetTime">
                     <div class="timeContainer">
                         <span class="hoursTens">0</span>
-                        <span class="hoursUnits">6</span>
+                        <span class="hoursUnits">1</span>
                     </div>
                     <span class="separatorH">h</span>
                     <div class="timeContainer">
@@ -663,13 +663,13 @@
             }
         });
 
+        let originalInput = ''; // 存儲用戶的原始輸入
+
         targetInput.addEventListener('input', (e) => {
             setAllElementsToSemiTransparent(); // 將所有元素更改為半透明狀態
             setAllElementsToZero(); // 將所有數值規零
 
-            let value = e.target.value.replace(/\D/g, '').padStart(4, '0').slice(-4);
-            let hours = value.slice(0, 2);
-            let minutes = value.slice(2, 4);
+            originalInput = e.target.value.replace(/\D/g, '').padStart(4, '0').slice(-4);
             
             // 根據輸入的數字數量設置透明度
             if (e.target.value.length >= 1) {
@@ -687,16 +687,19 @@
                 hoursTensSpan.style.opacity = '1';
             }
             
-            hoursTensSpan.textContent = hours[0];
-            hoursUnitsSpan.textContent = hours[1];
-            minutesTensSpan.textContent = minutes[0];
-            minutesUnitsSpan.textContent = minutes[1];
+            hoursTensSpan.textContent = originalInput[0];
+            hoursUnitsSpan.textContent = originalInput[1];
+            minutesTensSpan.textContent = originalInput[2];
+            minutesUnitsSpan.textContent = originalInput[3];
             
-            updateWorkButtonState(hours, minutes);
-            // Update hoursSpan & minutesSpan for other functions
-            hoursSpan = (hoursTensSpan.textContent) * 10 + (hoursUnitsSpan.textContent) * 1 ;
-            minutesSpan = (minutesTensSpan.textContent) * 10 + (minutesUnitsSpan.textContent) * 1 ;
+            updateWorkButtonState();
         });
+
+        function updateWorkButtonState() {
+            const isValid = originalInput.length === 4;
+            workButton.disabled = !isValid;
+            workButton.classList.toggle('disabled', !isValid);
+        }
                 
         targetInput.addEventListener('blur', () => {
             isEditing = false;
@@ -754,11 +757,6 @@
             });
         }
 
-        function updateWorkButtonState(hours, minutes) {
-            const isValid = parseInt(hours) <= 99 && parseInt(minutes) <= 59;
-            workButton.disabled = !isValid;
-            workButton.classList.toggle('disabled', !isValid);
-        }
         // targetContainer
 
 
@@ -912,6 +910,23 @@
     
         function work() {
             if (!startTime || isOnBreak) {
+                // 在這裡添加時間轉換邏輯
+                let totalMinutes = parseInt(originalInput.slice(0, 2)) * 60 + parseInt(originalInput.slice(2, 4));
+                totalMinutes = Math.min(totalMinutes, 99 * 60 + 60); // 限制最大時間為 99 小時 60 分鐘
+
+                let hours = Math.floor(totalMinutes / 60);
+                let minutes = totalMinutes % 60;
+
+                hoursSpan = hours;
+                minutesSpan = minutes;
+
+                // 更新顯示的時間
+                hoursTensSpan.textContent = String(hours).padStart(2, '0')[0];
+                hoursUnitsSpan.textContent = String(hours).padStart(2, '0')[1];
+                minutesTensSpan.textContent = String(minutes).padStart(2, '0')[0];
+                minutesUnitsSpan.textContent = String(minutes).padStart(2, '0')[1];
+
+                // 原有的 work() 函數邏輯
                 if (isOnBreak) {
                     const breakEndTime = new Date();
                     totalBreakTime += (breakEndTime - breakStartTime) / 1000;
