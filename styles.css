@@ -8,8 +8,8 @@
     --on-secondary: #f8f8f8;
 
     /* 主要按鈕 */
-    --primary-button: #fddaa5;
-    --primary-button-hover: #fcce73;
+    --primary-button: #fad589;
+    --primary-button-hover: #f5c566;
     --on-primary-button: #332200;
 
     /* 次要按鈕 */
@@ -45,7 +45,7 @@
 
 .dark-mode {
     /* 主色 */
-    --primary: #bfaf92;
+    --primary: #c6b89f;
     --on-primary: #080808;
                 
     /* 次要色 */
@@ -53,13 +53,13 @@
     --on-secondary: #080808;
 
     /* 主要按鈕 */
-    --primary-button: #5a3702;
-    --primary-button-hover: #704b00;
+    --primary-button: #6c4904;
+    --primary-button-hover: #7d5a08;
     --on-primary-button: #ffeecc;
 
     /* 次要按鈕 */
-    --secondary-button: #231e15;
-    --secondary-button-hover: #332e1f;
+    --secondary-button: #2d261a;
+    --secondary-button-hover: #383324;
     --on-secondary-button: #f7e2b6;
 
     /* 錯誤色 */
@@ -154,7 +154,11 @@ button.disabled {
     color: var(--on-disable-button);
 }
 
-#buttonGroup { display: block; }
+#buttonGroup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* 圖標樣式 */
 .material-symbols-outlined {
@@ -293,7 +297,6 @@ button.disabled {
     overflow: hidden;
     height: 128px;
     width: 256px;
-    --progress-color: var(--primary-button-hover);
     background-color: var(--secondary-button);
     margin: 8px 0;
     border-radius: 8px;
@@ -303,7 +306,7 @@ button.disabled {
 #progress {
     width: 0%;
     height: 100%;
-    background-color: var(--progress-color);
+    background-color: var(--primary-button);
     border-radius: 4px;
     min-width: 2%;
     transition: opacity 0.2s ease-out;
