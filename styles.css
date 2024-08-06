@@ -1,15 +1,15 @@
 :root {
     /* 主色 */
     --primary: #68583b;
-    --on-primary: #ffffff;
+    --on-primary: #f8f8f8;
 
     /* 次要色 */
     --secondary: #938762;
-    --on-secondary: #ffffff;
+    --on-secondary: #f8f8f8;
 
     /* 主要按鈕 */
     --primary-button: #fddaa5;
-    --primary-button-hover: #f0c775;
+    --primary-button-hover: #fcce73;
     --on-primary-button: #332200;
 
     /* 次要按鈕 */
@@ -34,8 +34,8 @@
     --surface: #fff8f2;
     --on-surface: #201b13;
     --surface-dim: #e3d9cc;
-    --surface-variant: #bcac9f;
-    --on-surface-variant: #4e4639;
+    --surface-variant: #f6ebd5;
+    --on-surface-variant: #534836;
     
     /* 其他色 */
     --outline: #7f7667;
@@ -46,20 +46,20 @@
 .dark-mode {
     /* 主色 */
     --primary: #bfaf92;
-    --on-primary: #3a2f15;
+    --on-primary: #080808;
                 
     /* 次要色 */
-    --secondary: #ffd680;
-    --on-secondary: #402d00;
+    --secondary: #9d916c;
+    --on-secondary: #080808;
 
     /* 主要按鈕 */
     --primary-button: #5a3702;
-    --primary-button-hover: #6c4204;
+    --primary-button-hover: #704b00;
     --on-primary-button: #ffeecc;
 
     /* 次要按鈕 */
     --secondary-button: #231e15;
-    --secondary-button-hover: #3e3828;
+    --secondary-button-hover: #332e1f;
     --on-secondary-button: #f7e2b6;
 
     /* 錯誤色 */
@@ -79,8 +79,8 @@
     --surface: #191310;
     --on-surface: #d0c4bc;
     --surface-dim: #31281b;
-    --surface-variant: #605043;
-    --on-surface-variant: #c7bfb2;
+    --surface-variant: #2a1f09;
+    --on-surface-variant: #c2b6a3;
 
     /* 其他色 */
     --outline: #7f7667;
@@ -105,10 +105,6 @@ h1 {
     text-align: center;
 }
 
-.material-icons {
-    font-size: 18px;
-}
-
 /* 按鈕樣式 */
 button {
     display: inline-flex;
@@ -126,7 +122,7 @@ button {
     cursor: pointer;
     margin: 8px;
     color: var(--primary);
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
 }
 
 .button-primary {
@@ -160,6 +156,17 @@ button.disabled {
 
 #buttonGroup { display: block; }
 
+/* 圖標樣式 */
+.material-symbols-outlined {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#reset {
+    font-weight: 600;
+}
+
+
 #currentTime, #clock {
     font-size: 16px;
     font-weight: 600;
@@ -189,12 +196,12 @@ button.disabled {
     font-weight: 600;
     margin: 4px 0;
     margin-right: 2px;
-    color: var(--secondary);
+    color: var(--primary);
 }
 
 #setGoalTime::before {
     content: "alarm";
-    font-family: "Material Icons";
+    font-family: "Material Symbols Outlined";
     font-size: 20px;
     padding-bottom: 1px;
 }
@@ -290,7 +297,7 @@ button.disabled {
     background-color: var(--secondary-button);
     margin: 8px 0;
     border-radius: 8px;
-    transition: 0.3s ease-out;
+    transition: 0.2s ease-out;
 }
 
 #progress {
@@ -299,7 +306,7 @@ button.disabled {
     background-color: var(--progress-color);
     border-radius: 4px;
     min-width: 2%;
-    transition: opacity 0.3s ease-out;
+    transition: opacity 0.2s ease-out;
     display: none;
 }
 
@@ -321,7 +328,7 @@ button.disabled {
     transform: translateX(-50%);
     width: 100%;
     margin-bottom: 4px;
-    transition: opacity 0.3s ease-out;
+    transition: opacity 0.2s ease-out;
 }
 
 #progressPercentage {
@@ -394,7 +401,7 @@ input:checked + .slider:before { transform: translateX(24px); }
     z-index: 1;
     color: var(--primary);
     opacity: 0.2;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease;
 }
 
 body:not(.dark-mode) .icon.sun,
@@ -420,9 +427,9 @@ summary {
 
 summary::before {
     content: "keyboard_arrow_down";
-    font-family: "Material Icons";
+    font-family: "Material Symbols Outlined";
     font-size: 20px;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 details[open] > summary::before { transform: rotate(180deg); }
@@ -433,7 +440,7 @@ summary::-webkit-details-marker { display: none; }
 
 #records { 
     width: 100%; 
-    margin-top: 8px;
+    margin-top: 16px;
 }
 
 .record-item {
