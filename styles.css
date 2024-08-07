@@ -160,10 +160,9 @@ button.disabled {
 }
 
 #setGoalTime::before {
-    content: "alarm";
+    content: "schedule";
     font-family: "Material Symbols Outlined";
     font-size: 20px;
-    padding-bottom: 1px;
 }
 
 #targetContainer {
