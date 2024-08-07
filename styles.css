@@ -53,7 +53,7 @@ button {
     gap: 8px;
     font-family: "Inter", Arial, sans-serif;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
     min-height: 48px;
     width: 120px;
     padding: 12px 16px;
@@ -69,8 +69,13 @@ button {
     width: 256px;
     min-height: 64px;
     font-size: 24px;
+    font-weight: 600;
     color: var(--on-primary);
     background-color: var(--primary);
+}
+
+.button-primary > .material-symbols-outlined  {
+    font-size: 24px;
 }
 
 .button-secondary {
@@ -122,11 +127,6 @@ button.disabled {
     font-size: 20px;
     font-weight: 600;
 }
-
-#reset {
-    font-weight: 600;
-}
-
 
 #currentTime, #clock {
     font-size: 16px;
@@ -366,6 +366,10 @@ input:checked + .slider:before { transform: translateX(24px); }
     color: var(--on-surface);
     opacity: 0.2;
     transition: 0.3s ease-out;
+}
+
+.icon > .material-symbols-outlined  {
+    font-size: 18px;
 }
 
 body:not(.dark-mode) .icon.sun,
