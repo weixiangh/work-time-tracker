@@ -1,97 +1,28 @@
 :root {
-    /* 主色 */
-    --primary: #68583b;
-    --on-primary: #f8f8f8;
-
-    /* 次要色 */
-    --secondary: #938762;
-    --on-secondary: #f8f8f8;
-
-    /* 主要按鈕 */
-    --primary-button: #fad589;
-    --primary-button-hover: #f5c566;
-    --on-primary-button: #332200;
-
-    /* 次要按鈕 */
-    --secondary-button: #eae5dc;
-    --secondary-button-hover: #d7d1c1;
-    --on-secondary-button: #493408;
-    
-    /* 錯誤色 */
+    --primary: #fa6f04;
+    --on-primary: #f5f4f4;
+    --primary-variant: #e6914c;
     --error: #ba1a1a;
-    --on-error: #ffffff;
-    --error-button: #ffdad6;
-    --error-button-hover: #f1bfbb;
-    --on-error-button: #410002;
-    
-    /* 禁用狀態 */
-    --disable-button: #e1e0e0;
-    --on-disable-button: #7c7979;
-    
-    /* 背景和表面色 */
-    --background: #fffdfa;
-    --on-background: #1f1c1a;
-    --surface: #fff8f2;
-    --on-surface: #201b13;
-    --surface-dim: #e3d9cc;
-    --surface-variant: #f6ebd5;
-    --on-surface-variant: #534836;
-    
-    /* 其他色 */
-    --outline: #7f7667;
-    --inverse-primary: #ebc06c;
-    --inverse-surface: #fbecda;
+    --error-container: #ffc9c2;
+    --surface-dim: #d6d3d1;
+    --surface: #dfdbd7;
+    --on-surface: #4a463c;
+    --background: #f5f2f0;
+    --on-background: #2e2824;
+    --gray: #7c776b;
+    --on-gray: #e1e0df;
 }
 
+
+
 .dark-mode {
-    /* 主色 */
-    --primary: #c6b89f;
-    --on-primary: #080808;
-                
-    /* 次要色 */
-    --secondary: #9d916c;
-    --on-secondary: #080808;
 
-    /* 主要按鈕 */
-    --primary-button: #6c4904;
-    --primary-button-hover: #7d5a08;
-    --on-primary-button: #ffeecc;
-
-    /* 次要按鈕 */
-    --secondary-button: #2d261a;
-    --secondary-button-hover: #383324;
-    --on-secondary-button: #f7e2b6;
-
-    /* 錯誤色 */
-    --error: #e44444;
-    --on-error: #000000;
-    --error-button: #4f0800;
-    --error-button-hover: #650a00;
-    --on-error-button: #ffbdbf;
-                
-    /* 禁用狀態 */
-    --disable-button: #1f1e1e;
-    --on-disable-button: #868383;
-                
-    /* 背景和表面色 */
-    --background: #1f1b16;
-    --on-background: #eae0d9;
-    --surface: #191310;
-    --on-surface: #d0c4bc;
-    --surface-dim: #31281b;
-    --surface-variant: #2a1f09;
-    --on-surface-variant: #c2b6a3;
-
-    /* 其他色 */
-    --outline: #7f7667;
-    --inverse-primary: #ebc06c;
-    --inverse-surface: #2e210f;
 }
 
 body {
     font-family: "Inter", Arial, sans-serif;
-    background-color: var(--surface);
-    color: var(--on-surface);
+    background-color: var(--background);
+    color: var(--surface);
     max-width: 512px;
     margin: 0 auto;
     padding: 20px;
@@ -99,7 +30,7 @@ body {
 }
 
 h1 {
-    color: var(--on-surface-variant);
+    color: var(--on-background);
     font-size: 36px;
     font-weight: 600;
     text-align: center;
@@ -107,6 +38,8 @@ h1 {
 
 /* 按鈕樣式 */
 button {
+    position: relative;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -121,37 +54,52 @@ button {
     border-radius: 8px;
     cursor: pointer;
     margin: 8px;
-    color: var(--primary);
-    transition: background-color 0.2s ease;
+    color: var(--on-background);
+    transition: 0.2s ease;
 }
 
 .button-primary {
     width: 256px;
     min-height: 64px;
     font-size: 24px;
-    background-color: var(--primary-button);
+    color: var(--on-primary);
+    background-color: var(--primary);
 }
 
 .button-secondary {
-    background-color: var(--secondary-button);
+    background-color: var(--surface-dim);
 }
 
 .button-error {
-    background-color: var(--error-button);
+    background-color: var(--error-container);
 }
 
+/* 創建覆蓋層 */
+button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--background);
+    opacity: 0;
+    transition: 0.2s ease;
+}
+
+/* 在 hover 狀態顯示覆蓋層 */
 @media (hover: hover) {
-    .button-primary:hover { background-color: var(--primary-button-hover); }
-    .button-secondary:hover { background-color: var(--secondary-button-hover); }
-    .button-error:hover { background-color: var(--error-button-hover); }
+    button:hover::after {
+        opacity: .15;
+    }
 }
 
 button.normal { pointer-events: auto; }
 
 button.disabled {
     pointer-events: none;
-    background-color: var(--disable-button);
-    color: var(--on-disable-button);
+    background-color: var(--gray);
+    color: var(--on-gray);
 }
 
 #buttonGroup {
@@ -176,7 +124,7 @@ button.disabled {
     font-weight: 600;
     margin-bottom: 4px;
     text-align: center;
-    color: var(--on-surface-variant);
+    color: var(--on-surface);
 }
 
 #clock { font-size: 24px; margin-bottom: 20px; }
@@ -188,7 +136,6 @@ button.disabled {
     margin: auto;
     align-items: center;
     justify-content: center;
-    color: var(--primary);
 }
 
 #setGoalTime {
@@ -200,7 +147,7 @@ button.disabled {
     font-weight: 600;
     margin: 4px 0;
     margin-right: 2px;
-    color: var(--primary);
+    color: var(--on-surface);
 }
 
 #setGoalTime::before {
@@ -221,7 +168,7 @@ button.disabled {
     width: 168px;
     font-size: 24px;
     font-weight: 600;
-    color: var(--primary);
+    color: var(--on-background);
     cursor: text;
 }
 
@@ -242,7 +189,7 @@ button.disabled {
     font-weight: 500;
     line-height: 40px;
     padding: 0 2px;
-    border-bottom: 2px solid var(--secondary);
+    border-bottom: 2px solid var(--on-surface);
 }
 
 #targetInputContainer {
@@ -283,7 +230,7 @@ button.disabled {
     width: 2px;
     height: 34px;
     margin-bottom: 2px;
-    background-color: var(--primary);
+    background-color: var(--on-surface);
     animation: blink 1s step-end infinite;
 }
 
@@ -297,7 +244,7 @@ button.disabled {
     overflow: hidden;
     height: 128px;
     width: 256px;
-    background-color: var(--secondary-button);
+    background-color: var(--surface);
     margin: 8px 0;
     border-radius: 8px;
     transition: 0.2s ease-out;
@@ -306,10 +253,10 @@ button.disabled {
 #progress {
     width: 0%;
     height: 100%;
-    background-color: var(--primary-button);
+    background-color: var(--primary);
     border-radius: 4px;
     min-width: 2%;
-    transition: opacity 0.2s ease-out;
+    transition: 0.2s ease-out;
     display: none;
 }
 
@@ -331,19 +278,19 @@ button.disabled {
     transform: translateX(-50%);
     width: 100%;
     margin-bottom: 4px;
-    transition: opacity 0.2s ease-out;
+    transition: 0.2s ease-out;
 }
 
 #progressPercentage {
     font-size: 48px;
     font-weight: 600;
     margin-bottom: 2px;
-    color: var(--primary);
+    color: var(--on-background);
 }
 
 #currentWorkTime {
     font-size: 16px;
-    color: var(--on-surface-variant);
+    color: var(--on-surface);
     font-weight: 500;
 }
 
@@ -402,9 +349,9 @@ input:checked + .slider:before { transform: translateX(24px); }
     width: 24px;
     margin: 0;
     z-index: 1;
-    color: var(--primary);
+    color: var(--on-surface);
     opacity: 0.2;
-    transition: opacity 0.2s ease;
+    transition: 0.2s ease;
 }
 
 body:not(.dark-mode) .icon.sun,
@@ -424,7 +371,7 @@ summary {
     font-size: 16px;
     font-weight: 400;
     padding: 16px;
-    color: var(--secondary);
+    color: var(--gray);
     cursor: pointer;
 }
 
@@ -432,7 +379,7 @@ summary::before {
     content: "keyboard_arrow_down";
     font-family: "Material Symbols Outlined";
     font-size: 20px;
-    transition: 0.2s;
+    transition: 0.2s ease;
 }
 
 details[open] > summary::before { transform: rotate(180deg); }
@@ -443,29 +390,27 @@ summary::-webkit-details-marker { display: none; }
 
 #records { 
     width: 100%; 
-    margin-top: 16px;
+    margin-top: 24px;
 }
 
 .record-item {
     display: grid;
     grid-template-columns: 1fr;
-    padding: 16px 0;
-    border-bottom: 0.5px solid var(--secondary);
+    padding: 20px 0;
+    border-bottom: 0.5px solid var(--gray);
 }
 
 .record-time, .record-action { padding: 4px 0; }
 
 .record-time {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
-    color: var(--primary);
+    color: var(--on-surface);
 }
 
 .record-action {
     font-size: 16px;
-    font-weight: 400;
-    color: var(--on-surface-variant);
-    white-space: pre-line;
+    color: var(--on-surface);
     line-height: 1.5;
 }
 
