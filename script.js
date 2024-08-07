@@ -6,6 +6,8 @@ const progressTextGroupElement = document.getElementById('progressTextGroup');
 const progressPercentageElement = document.getElementById('progressPercentage');
 const currentWorkTimeElement = document.getElementById('currentWorkTime');
 const targetHoursGroupElement = document.getElementById('targetHoursGroup');
+const timeContainerH = document.getElementById('timeContainerH');
+const timeContainerM = document.getElementById('timeContainerM');
 const workButton = document.getElementById('work');
 const startBreakButton = document.getElementById('startBreak');
 const getOffButton = document.getElementById('getOff');
@@ -157,7 +159,7 @@ function updateProgressBar(percentage) {
     progressElement.style.width = `${percentage}%`;
     progressPercentageElement.textContent = `${percentage.toFixed(1)}%`;
     
-    if (percentage < 5) {
+    if (percentage < 1) {
         progressElement.classList.add('pulsing');
         progressTextGroupElement.classList.add('pulsing');
     } else {
@@ -236,6 +238,7 @@ function updateUIForWorkStart() {
     resetButton.classList.add('normal');
     targetHoursGroupElement.style.display = 'none';
     progressBarElement.style.width = '100%';
+    progressBarElement.style.cursor = 'default';
     progressElement.style.display = 'block';
     progressElement.style.width = '2%';
     progressTextGroupElement.style.display = 'flex';
@@ -387,6 +390,9 @@ function resetUIElements() {
     getOffButton.classList.add('disabled');
     resetButton.classList.remove('normal');
     resetButton.classList.add('disabled');
+    progressBarElement.style.cursor = 'pointer';
+    timeContainerH.style.borderBottomColor = 'var(--primary)';
+    timeContainerM.style.borderBottomColor = 'var(--primary)';
 }
 
 // 清除所有記錄
@@ -458,6 +464,7 @@ targetInput.addEventListener('blur', () => {
     isEditing = false;
     targetInput.style.display = 'none';
     blinkingCursor.style.display = 'none';
+    
     setAllElementsToVisible() // 將所有元素更改為正常可見狀態
 
     // Update targetHours for other functions
@@ -468,12 +475,19 @@ progressBarElement.addEventListener('click', () => {
     if (!isEditing) {
         isEditing = true;
         setAllElementsToSemiTransparent(); // 將所有元素更改為半透明狀態
-        blinkingCursor.style.display = 'block';
-        targetInput.style.display = 'block';
-        targetInput.value = "" ;
-        targetInput.focus();
+        updateUIInput();
     }
 });
+
+// 更新UI以開始輸入時間
+function updateUIInput() {
+    timeContainerH.style.borderBottomColor = 'var(--gray)';
+    timeContainerM.style.borderBottomColor = 'var(--gray)';
+    blinkingCursor.style.display = 'block';
+    targetInput.style.display = 'block';
+    targetInput.value = "" ;
+    targetInput.focus();
+}
 
 document.body.addEventListener('click', function(event) {
     const target = event.target.closest('button');
