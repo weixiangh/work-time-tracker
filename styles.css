@@ -136,7 +136,7 @@ button.disabled {
     font-size: 24px;
 }
 
-#getOff::before {
+#end::before {
     content: "stop";
     font-family: "Material Symbols Outlined";
     font-size: 20px;

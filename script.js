@@ -10,7 +10,7 @@ const timeContainerH = document.getElementById('timeContainerH');
 const timeContainerM = document.getElementById('timeContainerM');
 const workButton = document.getElementById('work');
 const breakButton = document.getElementById('break');
-const getOffButton = document.getElementById('getOff');
+const endButton = document.getElementById('end');
 const resetButton = document.getElementById('reset');
 const clearButton = document.getElementById('clear');
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
@@ -232,8 +232,8 @@ function updateUIForWorkStart() {
     breakButton.classList.add('normal');
     workButton.classList.remove('normal');
     workButton.classList.add('disabled');
-    getOffButton.classList.remove('disabled');
-    getOffButton.classList.add('normal');
+    endButton.classList.remove('disabled');
+    endButton.classList.add('normal');
     resetButton.classList.remove('disabled');
     resetButton.classList.add('normal');
     targetHoursGroupElement.style.display = 'none';
@@ -321,7 +321,7 @@ function startBreak() {
 }
 
 // 結束工作
-function getOff() {
+function end() {
     if (startTime) {
         const endTime = new Date();
         let totalWorkTime = endTime - startTime - (totalBreakTime * 1000);
@@ -359,8 +359,8 @@ function updateUIForWorkEnd() {
     workButton.classList.remove('disabled');
     workButton.classList.add('normal');
     workButton.querySelector('span').textContent = 'Work';
-    getOffButton.classList.remove('normal');
-    getOffButton.classList.add('disabled');
+    endButton.classList.remove('normal');
+    endButton.classList.add('disabled');
     resetButton.classList.remove('normal');
     resetButton.classList.add('disabled');
     updateProgressAndTime();
@@ -386,8 +386,8 @@ function resetUIElements() {
     workButton.classList.add('normal');
     breakButton.classList.remove('normal');
     breakButton.classList.add('disabled');
-    getOffButton.classList.remove('normal');
-    getOffButton.classList.add('disabled');
+    endButton.classList.remove('normal');
+    endButton.classList.add('disabled');
     resetButton.classList.remove('normal');
     resetButton.classList.add('disabled');
     progressBarElement.style.cursor = 'pointer';
@@ -400,7 +400,6 @@ function clear() {
     records = [];
     localStorage.removeItem('workRecords');
     displayRecords();
-    alert('All records have been cleared.');
 }
 
 // 導出數據
@@ -418,9 +417,9 @@ function exportData() {
 // 更新按鈕可見性
 function updateButtonVisibility(state) {
     const states = {
-        'initial': { work: true, break: false, getOff: false, reset: false },
-        'working': { work: false, break: true, getOff: true, reset: true },
-        'break': { work: true, break: false, getOff: true, reset: true }
+        'initial': { work: true, break: false, end: false, reset: false },
+        'working': { work: false, break: true, end: true, reset: true },
+        'break': { work: true, break: false, end: true, reset: true }
     };
     
     Object.entries(states[state]).forEach(([button, isVisible]) => {
@@ -496,9 +495,9 @@ document.body.addEventListener('click', function(event) {
     const actions = {
         'work': work,
         'break': startBreak,
-        'getOff': () => { if (confirm("Do you want to get off?")) getOff(); },
-        'reset': () => { if (confirm("Are you sure?")) reset(); },
-        'clear': () => { if (confirm('Are you sure?')) clear(); }
+        'end': () => { if (confirm("End the session and clear the timer?")) end(); },
+        'reset': () => { if (confirm("Are you sure you want to reset the timer?")) reset(); },
+        'clear': () => { if (confirm('Are you sure you want to clear all records?')) clear(); }
     };
 
     if (actions[target.id]) actions[target.id]();
@@ -513,6 +512,6 @@ updateProgressAndTime();
 updateButtonVisibility('initial');
 
 // 移除按鈕上的 onclick 屬性
-['work', 'break', 'getOff', 'reset', 'clear'].forEach(id => {
+['work', 'break', 'end', 'reset', 'clear'].forEach(id => {
     document.getElementById(id).removeAttribute('onclick');
 });
