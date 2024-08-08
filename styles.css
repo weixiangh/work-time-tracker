@@ -74,10 +74,6 @@ button {
     background-color: var(--primary);
 }
 
-.button-primary > .material-symbols-outlined  {
-    font-size: 24px;
-}
-
 .button-secondary {
     background-color: var(--surface-dim);
 }
@@ -126,6 +122,42 @@ button.disabled {
 .material-symbols-outlined {
     font-size: 20px;
     font-weight: 600;
+}
+
+#work::before {
+    content: "play_arrow";
+    font-family: "Material Symbols Outlined";
+    font-size: 24px;
+}
+
+#break::before {
+    content: "pause";
+    font-family: "Material Symbols Outlined";
+    font-size: 24px;
+}
+
+#getOff::before {
+    content: "stop";
+    font-family: "Material Symbols Outlined";
+    font-size: 20px;
+}
+
+#reset::before {
+    content: "refresh";
+    font-family: "Material Symbols Outlined";
+    font-size: 20px;
+}
+
+#export::before {
+    content: "download";
+    font-family: "Material Symbols Outlined";
+    font-size: 20px;
+}
+
+#clear::before {
+    content: "delete_forever";
+    font-family: "Material Symbols Outlined";
+    font-size: 20px;
 }
 
 #currentTime, #clock {
@@ -355,7 +387,7 @@ button.disabled {
 
 input:checked + .slider:before { transform: translateX(24px); }
 
-.icon {
+#sun, #moon {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -368,12 +400,22 @@ input:checked + .slider:before { transform: translateX(24px); }
     transition: 0.3s ease-out;
 }
 
-.icon > .material-symbols-outlined  {
-    font-size: 18px;
+#sun::before {
+    content: "light_mode";
+    font-family: "Material Symbols Outlined";
+    font-size: 16px;
+    font-weight: 400;
 }
 
-body:not(.dark-mode) .icon.sun,
-body.dark-mode .icon.moon { opacity: 0.8; }
+#moon::before {
+    content: "dark_mode";
+    font-family: "Material Symbols Outlined";
+    font-size: 16px;
+    font-weight: 400;
+}
+
+body:not(.dark-mode) #sun,
+body.dark-mode #moon { opacity: 0.8; }
 
 /* 記錄詳情樣式 */
 details {

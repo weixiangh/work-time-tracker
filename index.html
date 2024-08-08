@@ -9,7 +9,7 @@
     <link rel="icon" href="/work-time-tracker/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/work-time-tracker/apple-touch-icon.png">
     <!-- Material Icons 字體 -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,600,1,0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400..600,1,0">
     <!-- Inter 字體 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,11 +61,9 @@
         <!-- 主要操作按鈕 -->
         <div id="buttonGroup">
             <button class="button-primary" id="work">
-                <i class="material-symbols-outlined">play_arrow</i>
                 <span>Work</span>
             </button>
-            <button class="button-primary disabled" id="startBreak">
-                <i class="material-symbols-outlined">pause</i>
+            <button class="button-primary disabled" id="break">
                 <span>Break</span>
             </button>
         </div>
@@ -73,11 +71,9 @@
         <!-- 次要操作按鈕 -->
         <div id="buttonGroup">
             <button class="button-secondary disabled" id="getOff">
-                <i class="material-symbols-outlined">stop</i>
                 <span>Get Off</span>
             </button>
             <button class="button-error disabled" id="reset">
-                <i class="material-symbols-outlined" id="reset">refresh</i>
                 <span>Reset</span>
             </button>
         </div>
@@ -87,11 +83,9 @@
             <label class="theme-switch" for="checkbox">
                 <input type="checkbox" id="checkbox" />
                 <div class="slider round">
-                    <div class="icon sun">
-                        <i class="material-symbols-outlined">light_mode</i>
+                    <div id="sun">
                     </div>
-                    <div class="icon moon">
-                        <i class="material-symbols-outlined">dark_mode</i>
+                    <div id="moon">
                     </div>
                 </div>
             </label>
@@ -103,12 +97,10 @@
                 <span id="summary-title">Work Records</span>
             </summary>
             <div id="buttonGroup">
-                <button class="button-secondary" id="exportData">
-                    <i class="material-symbols-outlined">download</i>
+                <button class="button-secondary" id="export">
                     <span>Export</span>
                 </button>
-                <button class="button-error" id="clearRecords">
-                    <i class="material-symbols-outlined">delete_forever</i>
+                <button class="button-error" id="clear">
                     <span>Clear</span>
                 </button>
             </div>

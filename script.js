@@ -9,10 +9,10 @@ const targetHoursGroupElement = document.getElementById('targetHoursGroup');
 const timeContainerH = document.getElementById('timeContainerH');
 const timeContainerM = document.getElementById('timeContainerM');
 const workButton = document.getElementById('work');
-const startBreakButton = document.getElementById('startBreak');
+const breakButton = document.getElementById('break');
 const getOffButton = document.getElementById('getOff');
 const resetButton = document.getElementById('reset');
-const clearRecordsButton = document.getElementById('clearRecords');
+const clearButton = document.getElementById('clear');
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 
 // 目標時間相關元素
@@ -228,8 +228,8 @@ function startWork() {
 
 // 更新UI以開始工作
 function updateUIForWorkStart() {
-    startBreakButton.classList.remove('disabled');
-    startBreakButton.classList.add('normal');
+    breakButton.classList.remove('disabled');
+    breakButton.classList.add('normal');
     workButton.classList.remove('normal');
     workButton.classList.add('disabled');
     getOffButton.classList.remove('disabled');
@@ -310,8 +310,8 @@ function startBreak() {
     if (!isOnBreak && startTime) {
         isOnBreak = true;
         breakStartTime = new Date();
-        startBreakButton.classList.remove('normal');
-        startBreakButton.classList.add('disabled');
+        breakButton.classList.remove('normal');
+        breakButton.classList.add('disabled');
         workButton.classList.remove('disabled');
         workButton.classList.add('normal');
         addRecord('Start Break');
@@ -354,8 +354,8 @@ function resetWorkSession() {
 
 // 更新UI以結束工作
 function updateUIForWorkEnd() {
-    startBreakButton.classList.remove('normal');
-    startBreakButton.classList.add('disabled');
+    breakButton.classList.remove('normal');
+    breakButton.classList.add('disabled');
     workButton.classList.remove('disabled');
     workButton.classList.add('normal');
     workButton.querySelector('span').textContent = 'Work';
@@ -384,8 +384,8 @@ function resetUIElements() {
     currentWorkTimeElement.textContent = '00:00:00';
     workButton.classList.remove('disabled');
     workButton.classList.add('normal');
-    startBreakButton.classList.remove('normal');
-    startBreakButton.classList.add('disabled');
+    breakButton.classList.remove('normal');
+    breakButton.classList.add('disabled');
     getOffButton.classList.remove('normal');
     getOffButton.classList.add('disabled');
     resetButton.classList.remove('normal');
@@ -396,7 +396,7 @@ function resetUIElements() {
 }
 
 // 清除所有記錄
-function clearRecords() {
+function clear() {
     records = [];
     localStorage.removeItem('workRecords');
     displayRecords();
@@ -418,9 +418,9 @@ function exportData() {
 // 更新按鈕可見性
 function updateButtonVisibility(state) {
     const states = {
-        'initial': { work: true, startBreak: false, getOff: false, reset: false },
-        'working': { work: false, startBreak: true, getOff: true, reset: true },
-        'break': { work: true, startBreak: false, getOff: true, reset: true }
+        'initial': { work: true, break: false, getOff: false, reset: false },
+        'working': { work: false, break: true, getOff: true, reset: true },
+        'break': { work: true, break: false, getOff: true, reset: true }
     };
     
     Object.entries(states[state]).forEach(([button, isVisible]) => {
@@ -495,16 +495,16 @@ document.body.addEventListener('click', function(event) {
 
     const actions = {
         'work': work,
-        'startBreak': startBreak,
+        'break': startBreak,
         'getOff': () => { if (confirm("Do you want to get off?")) getOff(); },
         'reset': () => { if (confirm("Are you sure?")) reset(); },
-        'clearRecords': () => { if (confirm('Are you sure?')) clearRecords(); }
+        'clear': () => { if (confirm('Are you sure?')) clear(); }
     };
 
     if (actions[target.id]) actions[target.id]();
 });
 
-document.getElementById('exportData').addEventListener('click', exportData);
+document.getElementById('export').addEventListener('click', exportData);
 
 // 初始化
 requestAnimationFrame(updateClock);
@@ -513,6 +513,6 @@ updateProgressAndTime();
 updateButtonVisibility('initial');
 
 // 移除按鈕上的 onclick 屬性
-['work', 'startBreak', 'getOff', 'reset', 'clearRecords'].forEach(id => {
+['work', 'break', 'getOff', 'reset', 'clear'].forEach(id => {
     document.getElementById(id).removeAttribute('onclick');
 });
