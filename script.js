@@ -13,7 +13,7 @@ const breakButton = document.getElementById('break');
 const endButton = document.getElementById('end');
 const resetButton = document.getElementById('reset');
 const clearButton = document.getElementById('clear');
-const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+const themeSwitch = document.getElementById('theme-switch');
 
 // 目標時間相關元素
 const targetContainer = document.getElementById('targetContainer');
@@ -43,23 +43,144 @@ let minutesSpan = parseInt(minutesTensSpan.textContent) * 10 + parseInt(minutesU
 
 // 主題切換功能
 function switchTheme(e) {
-    if (e.target.checked) {
-        document.body.classList.add('dark-mode');
+    document.body.classList.toggle('dark-mode');
+    if (document.body.classList.contains('dark-mode')) {
         localStorage.setItem('theme', 'dark');
+        document.getElementById('theme-icon').textContent = 'dark_mode';
     } else {
-        document.body.classList.remove('dark-mode');
         localStorage.setItem('theme', 'light');
-    }    
+        document.getElementById('theme-icon').textContent = 'light_mode';
+    }
 }
 
-toggleSwitch.addEventListener('change', switchTheme, false);
+themeSwitch.addEventListener('click', switchTheme, false);
 
 // 應用用戶的主題偏好
 const currentTheme = localStorage.getItem('theme');
 if (currentTheme) {
     document.body.classList[currentTheme === 'dark' ? 'add' : 'remove']('dark-mode');
-    toggleSwitch.checked = currentTheme === 'dark';
+    if (currentTheme === 'dark') {
+        document.getElementById('theme-icon').textContent = 'dark_mode';
+    } else {
+        document.getElementById('theme-icon').textContent = 'light_mode';
+    }
 }
+
+// 語言切換功能
+const languageSwitch = document.getElementById('language-switch');
+const languageIcon = document.getElementById('language-icon');
+const languageMenu = document.querySelector('.language-menu');
+const languageOptions = document.querySelectorAll('.language-option');
+let currentLanguage = 'en'; // 預設為英文
+
+// 切換語言選單的顯示/隱藏
+function toggleLanguageMenu() {
+    languageMenu.classList.toggle('open');
+}
+
+// 切換語言
+function switchLanguage(lang) {
+    currentLanguage = lang;
+    updateLanguageContent();
+    toggleLanguageMenu();
+    updateLanguageFontSize();
+}
+
+// 更新網頁內容的語言
+function updateLanguageContent() {
+    // 在此處添加更新網頁內容的邏輯
+    console.log(`Current language: ${currentLanguage}`);
+}
+
+// 修改字級大小
+function updateLanguageFontSize() {
+    if (currentLanguage = 'zh') {
+        document.querySelector('.separatorH').style.fontSize = '20px';
+        document.querySelector('.separatorM').style.fontSize = '20px';
+    }
+}
+
+// 事件監聽器
+languageSwitch.addEventListener('click', toggleLanguageMenu);
+languageOptions.forEach(option => {
+    option.addEventListener('click', () => switchLanguage(option.dataset.lang));
+});
+
+// 點擊外部關閉語言選單
+document.addEventListener('click', (event) => {
+    if (!event.target.closest('.language-dropdown')) {
+        languageMenu.classList.remove('open');
+    }
+});
+
+//各語言文字內容
+const languageContent = {
+    en: {
+        //title: 'Work Time Tracker',
+        setGoalTime: 'Set Goal Time',
+        timerH: 'h',
+        timerM: 'm',
+        work: 'Work',
+        break: 'Break',
+        end: 'End',
+        reset: 'Reset',
+        export: 'Export',
+        clear: 'Clear',
+        records: 'Work Records'
+    },
+    zh: {
+       //title: '工作時間追蹤器',
+        setGoalTime: '設定目標時間',
+        timerH: '時',
+        timerM: '分',
+        work: '工作',
+        break: '休息',
+        end: '結束',
+        reset: '重置',
+        export: '匯出',
+        clear: '清除',
+        records: '工作記錄'
+    },
+    
+    //ja: {
+        //title: '作業時間トラッカー',
+        //setGoalTime: '目標時間を設定',
+        //work: '作業',
+        //break: '休憩',
+        //end: '終了',
+        //reset: 'リセット',
+        //export: 'エクスポート',
+        //clear: '消去',
+        //records: '作業記録'
+    //},
+    //es: {
+        //title: 'Rastreador de tiempo de trabajo',
+        //setGoalTime: 'Establecer tiempo objetivo',
+        //work: 'Trabajar',
+        //break: 'Descanso',
+        //end: 'Terminar',
+        //reset: 'Restablecer',
+        //export: 'Exportar',
+        //clear: 'Borrar',
+        //records: 'Registros de trabajo'
+    //}
+    //
+};
+
+function updateLanguageContent() {
+    //document.querySelector('h1').textContent = languageContent[currentLanguage].title;
+    document.getElementById('setGoalTime').querySelector('span').textContent = languageContent[currentLanguage].setGoalTime;
+    document.querySelector('.separatorH').textContent = languageContent[currentLanguage].timerH;
+    document.querySelector('.separatorM').textContent = languageContent[currentLanguage].timerM;
+    document.getElementById('work').querySelector('span').textContent = languageContent[currentLanguage].work;
+    document.getElementById('break').querySelector('span').textContent = languageContent[currentLanguage].break;
+    document.getElementById('end').querySelector('span').textContent = languageContent[currentLanguage].end;
+    document.getElementById('reset').querySelector('span').textContent = languageContent[currentLanguage].reset;
+    document.getElementById('export').querySelector('span').textContent = languageContent[currentLanguage].export;
+    document.getElementById('clear').querySelector('span').textContent = languageContent[currentLanguage].clear;
+    document.getElementById('summary-title').textContent = languageContent[currentLanguage].records;
+}
+//
 
 // 更新時鐘顯示
 function updateClock() {

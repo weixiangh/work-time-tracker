@@ -20,7 +20,7 @@
     --surface-dim: #312d2b;
     --surface: #201e1d;
     --on-surface: #c3c0b6;
-    --background: #110f0e;
+    --background: #161412;
     --on-background: #edebe9;
     --gray: #9e9894;
     --on-gray: #42403e;
@@ -36,11 +36,28 @@ body {
     text-align: center;
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+    margin-bottom: 16px;
+}
+
 h1 {
     color: var(--on-background);
-    font-size: 36px;
+    font-size: 24px;
     font-weight: 600;
     text-align: center;
+    margin: 4px 0;
+}
+
+.headerButtons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin: 4px 0;
 }
 
 /* 按鈕樣式 */
@@ -54,7 +71,7 @@ button {
     font-family: "Inter", Arial, sans-serif;
     font-size: 16px;
     font-weight: 500;
-    min-height: 48px;
+    height: 48px;
     width: 120px;
     padding: 12px 16px;
     border: none;
@@ -116,6 +133,125 @@ button.disabled {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* 主題切換開關 */
+#theme-switch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 4px;
+    background-color: var(--surface);
+    transition: 0.3s ease-out;
+}
+
+#theme-switch:hover {
+    background-color: var(--surface-dim);
+    transition: 0.2s ease;
+}
+
+#theme-icon {
+    font-size: 16px;
+    color: var(--on-surface);
+    transition: 0.2s ease;
+}
+
+body:not(.dark-mode) #theme-icon {
+    content: "light_mode";
+}
+
+body.dark-mode #theme-icon {
+    content: "dark_mode";
+}
+
+/* 語言切換開關 */
+#language-switch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 4px;
+    background-color: var(--surface);
+    transition: 0.3s ease-out;
+}
+
+#language-switch:hover {
+    background-color: var(--surface-dim);
+    transition: 0.2s ease;
+}
+
+#language-icon {
+    content: "language";
+    font-size: 16px;
+    color: var(--on-surface);
+    transition: 0.2s ease;
+}
+
+.language-dropdown {
+    position: relative;
+    display: inline-block;
+    transition: 0.3 ease-out;
+}
+
+.language-menu {
+    position: absolute;
+    display: inline-flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1;
+    right: 0;
+    margin-top: 8px;
+    border-radius: 8px;
+    background-color: var(--surface);
+    gap: 4px;
+    width: auto;
+    /* 開啟前 */
+    height: 0;
+    padding: 0 8px;
+    opacity: 0;
+    transition: 0.2s ease;
+}
+
+/* 開啟後 */
+.language-menu.open {
+    height: auto;
+    padding: 8px 8px; 
+    opacity: 1;
+}
+
+.language-option {
+    display: block;
+    text-align: left;
+    cursor: pointer;
+    height: auto;
+    width: 100%;
+    padding: 4px;
+    margin: 0;
+    border: none;
+    font-size: 16px;
+    border-radius: 4px;
+    color: var(--on-surface);
+    background-color: transparent;
+}
+
+.language-option:hover {
+    background-color: var(--background);
+    transition: 0.2s ease;
+}
+
+@media (hover: hover) {
+    .language-menu button:hover::after {
+        opacity: .2;
+    }
 }
 
 /* 圖標樣式 */
@@ -285,7 +421,7 @@ button.disabled {
     cursor: pointer;
     height: 128px;
     width: 256px;
-    margin: 8px 0;
+    margin: 16px 0;
     border-radius: 8px;
     transition: 0.4s ease-out;
     background-color: var(--surface);
@@ -339,83 +475,6 @@ button.disabled {
     font-weight: 500;
     color: var(--on-background);
 }
-
-/* 主題切換開關樣式 */
-.theme-switch-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 40px;
-}
-
-.theme-switch {
-    display: inline-block;
-    position: relative;
-    height: 32px;
-    width: 56px;
-}
-
-.theme-switch input { display: none; }
-
-.slider {
-    background-color: var(--surface);
-    bottom: 0;
-    cursor: pointer;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    border-radius: 24px;
-    transition: 0.3s ease-out;
-}
-
-.slider:before {
-    background-color: var(--background);
-    bottom: 4px;
-    content: "";
-    height: 24px;
-    width: 24px;
-    left: 4px;
-    position: absolute;
-    border-radius: 50%;
-    transition: 0.3s ease-out;
-}
-
-input:checked + .slider:before { transform: translateX(24px); }
-
-#sun, #moon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 24px;
-    width: 24px;
-    margin: 0;
-    z-index: 1;
-    color: var(--on-surface);
-    opacity: 0.2;
-    transition: 0.3s ease-out;
-}
-
-#sun::before {
-    content: "light_mode";
-    font-family: "Material Symbols Outlined";
-    font-size: 16px;
-    font-weight: 400;
-}
-
-#moon::before {
-    content: "dark_mode";
-    font-family: "Material Symbols Outlined";
-    font-size: 16px;
-    font-weight: 400;
-}
-
-body:not(.dark-mode) #sun,
-body.dark-mode #moon { opacity: 0.8; }
 
 /* 記錄詳情樣式 */
 details {
