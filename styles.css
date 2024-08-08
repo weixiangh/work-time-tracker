@@ -40,7 +40,8 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 8px;
+    /* padding: 0 8px; */
+    margin-top: 8px;
     margin-bottom: 16px;
 }
 
@@ -50,6 +51,12 @@ h1 {
     font-weight: 600;
     text-align: center;
     margin: 4px 0;
+    text-decoration: none;
+}
+
+h1 a {
+    color: var(--on-background);
+    text-decoration: none;
 }
 
 .headerButtons {
@@ -210,6 +217,7 @@ body.dark-mode #theme-icon {
     z-index: 1;
     right: 0;
     margin-top: 8px;
+    /* border: 4px solid var(--background); */
     border-radius: 8px;
     background-color: var(--surface);
     gap: 4px;
