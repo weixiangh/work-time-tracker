@@ -46,10 +46,12 @@ function switchTheme(e) {
     document.body.classList.toggle('dark-mode');
     if (document.body.classList.contains('dark-mode')) {
         localStorage.setItem('theme', 'dark');
-        document.getElementById('theme-icon').textContent = 'dark_mode';
+        //document.getElementById('theme-switch::before').style.content = 'dark_mode';
+        //document.getElementById('theme-icon').textContent = 'dark_mode';
     } else {
         localStorage.setItem('theme', 'light');
-        document.getElementById('theme-icon').textContent = 'light_mode';
+        //document.getElementById('theme-switch::before').style.content = 'light_mode';
+        //document.getElementById('theme-icon').textContent = 'light_mode';
     }
 }
 
@@ -60,12 +62,15 @@ const currentTheme = localStorage.getItem('theme');
 if (currentTheme) {
     document.body.classList[currentTheme === 'dark' ? 'add' : 'remove']('dark-mode');
     if (currentTheme === 'dark') {
-        document.getElementById('theme-icon').textContent = 'dark_mode';
+        //document.getElementById('theme-switch::before').style.content = 'dark_mode';
+        //document.getElementById('theme-icon').textContent = 'dark_mode';
     } else {
-        document.getElementById('theme-icon').textContent = 'light_mode';
+        //document.getElementById('theme-switch::before').style.content = 'light_mode';
+        //document.getElementById('theme-icon').textContent = 'light_mode';
     }
 }
 
+/*
 // 語言切換功能
 const languageSwitch = document.getElementById('language-switch');
 const languageIcon = document.getElementById('language-icon');
@@ -141,31 +146,33 @@ const languageContent = {
         clear: '清除',
         records: '工作記錄'
     },
+
+    /*
+    ja: {
+        title: '作業時間トラッカー',
+        setGoalTime: '目標時間を設定',
+        work: '作業',
+        break: '休憩',
+        end: '終了',
+        reset: 'リセット',
+        export: 'エクスポート',
+        clear: '消去',
+        records: '作業記録'
+    },
+    es: {
+        title: 'Rastreador de tiempo de trabajo',
+        setGoalTime: 'Establecer tiempo objetivo',
+        work: 'Trabajar',
+        break: 'Descanso',
+        end: 'Terminar',
+        reset: 'Restablecer',
+        export: 'Exportar',
+        clear: 'Borrar',
+        records: 'Registros de trabajo'
+    }
     
-    //ja: {
-        //title: '作業時間トラッカー',
-        //setGoalTime: '目標時間を設定',
-        //work: '作業',
-        //break: '休憩',
-        //end: '終了',
-        //reset: 'リセット',
-        //export: 'エクスポート',
-        //clear: '消去',
-        //records: '作業記録'
-    //},
-    //es: {
-        //title: 'Rastreador de tiempo de trabajo',
-        //setGoalTime: 'Establecer tiempo objetivo',
-        //work: 'Trabajar',
-        //break: 'Descanso',
-        //end: 'Terminar',
-        //reset: 'Restablecer',
-        //export: 'Exportar',
-        //clear: 'Borrar',
-        //records: 'Registros de trabajo'
-    //}
-    //
 };
+*/
 
 function updateLanguageContent() {
     //document.querySelector('h1').textContent = languageContent[currentLanguage].title;

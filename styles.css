@@ -40,7 +40,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* padding: 0 8px; */
+    padding: 0 8px;
     margin-top: 8px;
     margin-bottom: 16px;
 }
@@ -162,6 +162,23 @@ button.disabled {
     transition: 0.2s ease;
 }
 
+#theme-switch::before {
+    content: "refresh";
+    font-family: "Material Symbols Outlined";
+    font-size: 16px;
+    color: var(--on-surface);
+    transition: 0.2s ease;
+}
+
+body:not(.dark-mode) #theme-switch::before {
+    content: "light_mode";
+}
+
+body.dark-mode #theme-switch::before {
+    content: "dark_mode";
+}
+
+/*
 #theme-icon {
     font-size: 16px;
     color: var(--on-surface);
@@ -175,8 +192,10 @@ body:not(.dark-mode) #theme-icon {
 body.dark-mode #theme-icon {
     content: "dark_mode";
 }
+*/
 
 /* 語言切換開關 */
+/*
 #language-switch {
     display: flex;
     justify-content: center;
@@ -217,19 +236,18 @@ body.dark-mode #theme-icon {
     z-index: 1;
     right: 0;
     margin-top: 8px;
-    /* border: 4px solid var(--background); */
+    //border: 4px solid var(--background);
     border-radius: 8px;
     background-color: var(--surface);
     gap: 4px;
     width: auto;
-    /* 開啟前 */
+    
     height: 0;
     padding: 0 8px;
     opacity: 0;
     transition: 0.2s ease;
 }
 
-/* 開啟後 */
 .language-menu.open {
     height: auto;
     padding: 8px 8px; 
@@ -261,6 +279,7 @@ body.dark-mode #theme-icon {
         opacity: .2;
     }
 }
+*/
 
 /* 圖標樣式 */
 .material-symbols-outlined {
