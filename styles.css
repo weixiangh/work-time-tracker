@@ -44,14 +44,22 @@ header {
     margin-bottom: 16px;
 }
 
+.header-title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 4px 0;
+}
+
 #logo {
-    max-width: 32px;
+    width: 32px;
+    height: 32px;
     margin-right: 8px
 }
 
 header h1 {
     color: var(--on-background);
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 600;
     text-align: center;
     margin: 4px 0;
