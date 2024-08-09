@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,7 @@
 <body>
     <header>
         <h1><a style="text-decoration: none" href="/work-time-tracker/">Work Time Tracker</a></h1>
-        <div class="headerButtons">
+        <div class="header-buttons">
             <!-- 主題切換開關 -->
             <button id="theme-switch"></button>
         </div>
@@ -33,6 +33,7 @@
 
         <!-- 進度條和目標時間設置 -->
         <div id="progressBox">
+            <input type="number" id="timeInput" tabIndex="0">
             <div id="timeInputContainer">
                 <div id="timeInputTitle">
                     <span>Set Goal Time</span>
@@ -40,18 +41,17 @@
                 <div id="timeInputGroup">
                     <div id="timeInputSurface">
                         <div id="inputNumberH">
-                            <span class="hoursTens">0</span>
-                            <span class="hoursUnits">1</span>
+                            <span class="hours-tens">0</span>
+                            <span class="hours-units">1</span>
                         </div>
-                        <span class="separatorH">h</span>
+                        <span class="separator-h">h</span>
                         <div id="inputNumberM">
-                            <span class="minutesTens">0</span>
-                            <span class="minutesUnits">0</span>
+                            <span class="minutes-tens">0</span>
+                            <span class="minutes-units">0</span>
                         </div>
-                        <span class="separatorM">m</span>
+                        <span class="separator-m">m</span>
                     </div>
                     <div id="timeInputInner">
-                        <input type="number" id="timeInput" hidden>
                         <div id="blinkingCursor" hidden></div>
                         <div id="timeInputBlock"></div>
                     </div>
@@ -65,7 +65,7 @@
         </div>
 
         <!-- 主要操作按鈕 -->
-        <div id="buttonGroup">
+        <div class="button-group">
             <button class="button-primary" id="work" style="display: inline-flex;">
                 <span>Work</span>
             </button>
@@ -75,7 +75,7 @@
         </div>
 
         <!-- 次要操作按鈕 -->
-        <div id="buttonGroup">
+        <div class="button-group">
             <button class="button-secondary" id="end" style="display: none;">
                 <span>End</span>
             </button>
@@ -89,7 +89,7 @@
             <summary>
                 <span id="summary-title">Work Records</span>
             </summary>
-            <div id="buttonGroup">
+            <div class="button-group">
                 <button class="button-secondary" id="export">
                     <span>Export</span>
                 </button>
@@ -100,6 +100,17 @@
             <div id="records"></div>
         </details>
     </main>
+
+    <div id="customConfirmDialog" class="modal">
+        <div class="modal-content">
+            <span id="modalTitle"></span>
+            <span id="modalMessage"></span>
+            <div class="button-group">
+                <button id="modalCancel">Cancel</button>
+                <button id="modalConfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
     <!-- JavaScript  -->
     <script src="script.js"></script>
 </body>

@@ -13,12 +13,12 @@ const themeSwitch = document.getElementById('theme-switch');
 // 目標時間相關元素
 const timeInputSurface = document.getElementById('timeInputSurface');
 const timeInput = document.getElementById('timeInput');
-const hoursTensSpan = timeInputSurface.querySelector('.hoursTens');
-const hoursUnitsSpan = timeInputSurface.querySelector('.hoursUnits');
-const minutesTensSpan = timeInputSurface.querySelector('.minutesTens');
-const minutesUnitsSpan = timeInputSurface.querySelector('.minutesUnits');
-const separatorH = timeInputSurface.querySelector('.separatorH');
-const separatorM = timeInputSurface.querySelector('.separatorM');
+const hoursTensSpan = timeInputSurface.querySelector('.hours-tens');
+const hoursUnitsSpan = timeInputSurface.querySelector('.hours-units');
+const minutesTensSpan = timeInputSurface.querySelector('.minutes-tens');
+const minutesUnitsSpan = timeInputSurface.querySelector('.minutes-units');
+const separatorH = timeInputSurface.querySelector('.separator-h');
+const separatorM = timeInputSurface.querySelector('.separator-m');
 const blinkingCursor = document.getElementById('blinkingCursor');
 
 // 全局變量
@@ -143,6 +143,8 @@ function updateProgressAndTime() {
 // 重置進度顯示
 function resetProgressDisplay() {
     timeInputContainerElement.style.display = 'block';
+    timeInput.style.display = 'block';
+    progressBoxElement.style.overflow = 'visible';
     progressBoxElement.style.width = '256px';
     progressElement.style.display = 'none';
     progressTextGroupElement.style.display = 'none';
@@ -162,12 +164,17 @@ function updateProgressBox(percentage) {
     }
 }
 
+let currentState = 'initial'; // 可能的值: 'initial', 'working', 'break'
+
 // 開始工作
 function work() {
     if (!startTime || isOnBreak) {
         if (originalInput === '') {
             // 若無輸入數值，使用預設值 01:00
             originalInput = '0100';
+        } else {
+            // 確保 originalInput 是 4 位數的字符串
+            originalInput = originalInput.padStart(4, '0').slice(-4);
         }
         updateGoalTime();
         if (isOnBreak) {
@@ -178,6 +185,7 @@ function work() {
         
         updateUIForWorkStart();
         startProgressUpdate();
+        currentState = 'working';
     }
 }
 
@@ -223,8 +231,10 @@ function startWork() {
 // 更新UI以開始工作
 function updateUIForWorkStart() {
     timeInputContainerElement.style.display = 'none';
+    timeInput.style.display = 'none';
+    progressBoxElement.style.overflow = 'hidden';
     progressBoxElement.style.width = '100%';
-    progressBoxElement.style.cursor = 'default';
+    timeInput.style.cursor = 'default';
     progressElement.style.display = 'block';
     progressElement.style.width = '2%';
     progressTextGroupElement.style.display = 'flex';
@@ -292,6 +302,7 @@ function startBreak() {
         addRecord('Start Break');
         updateProgressAndTime();
         updateButtonVisibility('break');
+        currentState = 'break';
     }
 }
 
@@ -348,7 +359,7 @@ function resetUIElements() {
     progressElement.style.width = '0%';
     progressPercentageElement.textContent = '0.0%';
     currentWorkTimeElement.textContent = '00:00:00';
-    progressBoxElement.style.cursor = 'pointer';
+    timeInput.style.cursor = 'pointer';
     inputNumberH.style.borderBottomColor = 'var(--primary)';
     inputNumberM.style.borderBottomColor = 'var(--primary)';
 }
@@ -383,10 +394,11 @@ function updateButtonVisibility(state) {
     Object.entries(states[state]).forEach(([button, isVisible]) => {
         document.getElementById(button).style.display = isVisible ? 'inline-flex' : 'none';
     });
+
+    currentState = state;
 }
 
 // 事件監聽器設置
-
 timeInput.addEventListener('input', (e) => {
     setAllElementsToSemiTransparent(); // 將所有元素更改為半透明狀態
     setAllElementsToZero(); // 將所有數值規零
@@ -396,14 +408,14 @@ timeInput.addEventListener('input', (e) => {
     // 根據輸入的數字數量設置透明度
     if (e.target.value.length >= 1) {
         minutesUnitsSpan.style.opacity = '1';
-        timeInputSurface.querySelector('.separatorM').style.opacity = '1';
+        timeInputSurface.querySelector('.separator-m').style.opacity = '1';
     }
     if (e.target.value.length >= 2) {
         minutesTensSpan.style.opacity = '1';
     }
     if (e.target.value.length >= 3) {
         hoursUnitsSpan.style.opacity = '1';
-        timeInputSurface.querySelector('.separatorH').style.opacity = '1';
+        timeInputSurface.querySelector('.separator-h').style.opacity = '1';
     }
     if (e.target.value.length >= 4) {
         hoursTensSpan.style.opacity = '1';
@@ -417,7 +429,6 @@ timeInput.addEventListener('input', (e) => {
 
 timeInput.addEventListener('blur', () => {
     isEditing = false;
-    timeInput.style.display = 'none';
     blinkingCursor.style.display = 'none';
     
     setAllElementsToVisible() // 將所有元素更改為正常可見狀態
@@ -426,11 +437,20 @@ timeInput.addEventListener('blur', () => {
     targetHours = parseFloat(hoursSpan) + parseFloat(minutesSpan) / 60;
 });
 
-progressBoxElement.addEventListener('click', () => {
+timeInput.addEventListener('click', () => {
     if (!isEditing) {
         isEditing = true;
         setAllElementsToSemiTransparent(); // 將所有元素更改為半透明狀態
         updateUIInput();
+    }
+});
+
+//按下空格或 Enter 鍵執行 work 動作
+timeInput.addEventListener('keydown', function(event) {
+    if (event.key === ' ' || event.key === 'Enter') {
+        event.preventDefault(); // 防止空格或 Enter 鍵的預設行為
+        this.blur(); // 移除焦點
+        work(); // 執行 work 函數
     }
 });
 
@@ -439,24 +459,100 @@ function updateUIInput() {
     inputNumberH.style.borderBottomColor = 'var(--gray)';
     inputNumberM.style.borderBottomColor = 'var(--gray)';
     blinkingCursor.style.display = 'block';
-    timeInput.style.display = 'block';
     timeInput.value = "" ;
     timeInput.focus();
 }
 
-document.body.addEventListener('click', function(event) {
+// 鍵盤事件監聽器
+document.addEventListener('keydown', function(event) {
+    if (event.key === ' ' && event.target === document.body) {
+        event.preventDefault(); // 防止空格鍵滾動頁面
+        if (currentState === 'initial' || currentState === 'break') {
+            work();
+        } else if (currentState === 'working') {
+            startBreak();
+        }
+    }
+});
+
+// 確認對話框
+function showCustomConfirm(title, message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('customConfirmDialog');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const cancelBtn = document.getElementById('modalCancel');
+        const confirmBtn = document.getElementById('modalConfirm');
+
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        modal.style.display = 'block';
+
+        let isResolved = false;
+
+        const handleCancel = () => {
+            if (isResolved) return;
+            isResolved = true;
+            modal.style.display = 'none';
+            resolve(false);
+        };
+
+        const handleConfirm = () => {
+            if (isResolved) return;
+            isResolved = true;
+            modal.style.display = 'none';
+            resolve(true);
+        };
+
+        cancelBtn.onclick = handleCancel;
+        confirmBtn.onclick = handleConfirm;
+
+        // 添加鍵盤事件監聽
+        const handleKeydown = (event) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                handleCancel();
+            } else if (event.key === 'Enter') {
+                event.preventDefault();
+                handleConfirm();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeydown);
+
+        // 在對話框關閉時移除事件監聽器
+        const cleanup = () => {
+            document.removeEventListener('keydown', handleKeydown);
+        };
+
+        cancelBtn.addEventListener('click', cleanup);
+        confirmBtn.addEventListener('click', cleanup);
+    });
+}
+
+// 確認對話框事件監聽器
+document.body.addEventListener('click', async function(event) {
     const target = event.target.closest('button');
     if (!target) return;
 
     const actions = {
         'work': work,
         'break': startBreak,
-        'end': () => { if (confirm("End the session and clear the timer?")) end(); },
-        'reset': () => { if (confirm("Are you sure you want to reset the timer?")) reset(); },
-        'clear': () => { if (confirm('Are you sure you want to clear all records?')) clear(); }
+        'end': async () => { 
+            event.preventDefault(); // 防止按鈕的預設點擊行為
+            if (await showCustomConfirm("End Session", "End the session and clear the timer?")) end(); 
+        },
+        'reset': async () => { 
+            event.preventDefault(); // 防止按鈕的預設點擊行為
+            if (await showCustomConfirm("Reset Timer", "Are you sure you want to reset the timer?")) reset(); 
+        },
+        'clear': async () => { 
+            event.preventDefault(); // 防止按鈕的預設點擊行為
+            if (await showCustomConfirm('Clear Records', 'Are you sure you want to clear all records?')) clear(); 
+        }
     };
 
-    if (actions[target.id]) actions[target.id]();
+    if (actions[target.id]) await actions[target.id]();
 });
 
 document.getElementById('export').addEventListener('click', exportData);

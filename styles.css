@@ -13,7 +13,7 @@
 }
 
 .dark-mode {
-    --primary: hsl(26, 100%, 52%);
+    --primary: #ff740a;
     --on-primary: white;
     --error: #e44444;
     --error-container: #520b00;
@@ -58,7 +58,7 @@ h1 a {
     text-decoration: none;
 }
 
-.headerButtons {
+.header-buttons {
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -127,7 +127,7 @@ button::after {
     }
 }
 
-#buttonGroup {
+.button-group {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -263,7 +263,7 @@ body.dark-mode #theme-switch::before {
     cursor: text;
 }
 
-.separatorH, .separatorM {
+.separator-h, .separator-m {
     display: flex;
     justify-content: flex-start;
     margin-left: 4px;
@@ -294,14 +294,40 @@ body.dark-mode #theme-switch::before {
     transform: translate(-50%, -50%);
 }
 
+/* 隱藏數字輸入框 (Input Number) 的上下箭頭 (Arrows) 控制項 */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* Firefox */
+input[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
 #timeInput {
+    display: block;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0;
-    cursor: default;
+    padding: 0;
+    cursor: pointer;
+    color: transparent;
+    background-color: transparent;
+    border: none;
+}
+
+#timeInput:focus {
+    /* user-select none */
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
 }
 
 #timeInputBlock {
@@ -333,7 +359,6 @@ body.dark-mode #theme-switch::before {
     align-items: center;
     position: relative;
     overflow: hidden;
-    cursor: pointer;
     height: 128px;
     width: 256px;
     margin: 16px 0;
@@ -449,4 +474,67 @@ summary::-webkit-details-marker { display: none; }
 }
 
 #currentTime, #clock { display: none; 
+}
+
+/* Modal Dialogs */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    position: relative;
+    top: 50%;
+    transform: translateY(-16vh);
+    display: inline-block;
+    min-width: 256px;
+    max-width: 320px;
+    margin: auto 20px;
+    padding: 16px 24px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--background);
+}
+
+#modalTitle {
+    display: block;
+    margin: 8px 0;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--on-background);
+}
+
+#modalMessage {
+    display: block;
+    margin: 16px 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--on-surface);
+}
+
+#modalConfirm, #modalCancel {
+    padding: 8px 12px;
+    height: 100%;
+    width: auto;
+    font-size: 16px;
+}
+
+#modalConfirm {
+    font-weight: 600;
+    color: var(--primary);
+    background-color: rgba(245, 105, 0, 0.1);
+}
+
+#modalCancel {
+    color: var(--gray);
+    background-color: rgba(107, 101, 97, 0.1)
 }
