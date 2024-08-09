@@ -54,13 +54,15 @@ header {
 #logo {
     width: 28px;
     height: 28px;
-    margin-right: 8px
+    margin-right: 12px
 }
 
 header h1 {
     color: var(--on-background);
     font-size: 26px;
     font-weight: 600;
+    font-kerning: normal;
+    letter-spacing: -1px;
     text-align: center;
     margin: 4px 0;
     text-decoration: none;
