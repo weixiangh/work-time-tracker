@@ -272,7 +272,7 @@ body.dark-mode #theme-switch::before {
     font-weight: 600;
 }
 
-#timeContainerH, #timeContainerM {
+#inputNumberH, #inputNumberM {
     display: flex;
     justify-content: flex-end;
     width: 56px;

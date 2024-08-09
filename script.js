@@ -6,8 +6,8 @@ const progressTextGroupElement = document.getElementById('progressTextGroup');
 const progressPercentageElement = document.getElementById('progressPercentage');
 const currentWorkTimeElement = document.getElementById('currentWorkTime');
 const timeInputContainerElement = document.getElementById('timeInputContainer');
-const timeContainerH = document.getElementById('timeContainerH');
-const timeContainerM = document.getElementById('timeContainerM');
+const inputNumberH = document.getElementById('inputNumberH');
+const inputNumberM = document.getElementById('inputNumberM');
 const themeSwitch = document.getElementById('theme-switch');
 
 // 目標時間相關元素
@@ -349,8 +349,8 @@ function resetUIElements() {
     progressPercentageElement.textContent = '0.0%';
     currentWorkTimeElement.textContent = '00:00:00';
     progressBoxElement.style.cursor = 'pointer';
-    timeContainerH.style.borderBottomColor = 'var(--primary)';
-    timeContainerM.style.borderBottomColor = 'var(--primary)';
+    inputNumberH.style.borderBottomColor = 'var(--primary)';
+    inputNumberM.style.borderBottomColor = 'var(--primary)';
 }
 
 // 清除所有記錄
@@ -436,8 +436,8 @@ progressBoxElement.addEventListener('click', () => {
 
 // 更新UI以開始輸入時間
 function updateUIInput() {
-    timeContainerH.style.borderBottomColor = 'var(--gray)';
-    timeContainerM.style.borderBottomColor = 'var(--gray)';
+    inputNumberH.style.borderBottomColor = 'var(--gray)';
+    inputNumberM.style.borderBottomColor = 'var(--gray)';
     blinkingCursor.style.display = 'block';
     timeInput.style.display = 'block';
     timeInput.value = "" ;
