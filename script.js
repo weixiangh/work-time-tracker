@@ -538,7 +538,7 @@ document.body.addEventListener('click', async function(event) {
         'break': startBreak,
         'end': async () => { 
             event.preventDefault(); // 防止按鈕的預設點擊行為
-            if (await showCustomConfirm("End Session", "End the session and clear the timer?")) end(); 
+            if (await showCustomConfirm("End Session", "Are you sure you want to end the session and clear the timer?")) end(); 
         },
         'reset': async () => { 
             event.preventDefault(); // 防止按鈕的預設點擊行為
