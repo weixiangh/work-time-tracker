@@ -52,8 +52,8 @@ header {
 }
 
 #logo {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     margin-right: 8px
 }
 
@@ -507,7 +507,7 @@ summary::-webkit-details-marker { display: none; }
     min-width: 256px;
     max-width: 320px;
     margin: auto 20px;
-    padding: 16px 24px;
+    padding: 24px;
     border-radius: 8px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -533,7 +533,7 @@ summary::-webkit-details-marker { display: none; }
 }
 
 #modalConfirm, #modalCancel {
-    padding: 4px 8px;
+    padding: 8px 16px;
     height: 100%;
     width: auto;
     border-radius: 8px;
