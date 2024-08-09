@@ -53,14 +53,14 @@ header {
 }
 
 #logo {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     margin-right: 8px
 }
 
 header h1 {
     color: var(--on-background);
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 600;
     line-height: 1;
     letter-spacing: -1px;
@@ -157,8 +157,8 @@ button::after {
     align-items: center;
     cursor: pointer;
     border: none;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     margin: 0;
     padding: 4px;
     background-color: var(--surface);
