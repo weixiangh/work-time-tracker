@@ -539,10 +539,12 @@ summary::-webkit-details-marker { display: none; }
 
 #modalConfirm, #modalCancel {
     padding: 8px 16px;
-    height: 100%;
-    width: auto;
+    height: 40px;
+    width: 96px;
+    margin-top: 12px 8px;
     border-radius: 8px;
     font-size: 16px;
+    font-weight: 500;
 }
 
 #modalConfirm {
