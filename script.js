@@ -144,7 +144,6 @@ function updateProgressAndTime() {
 function resetProgressDisplay() {
     timeInputContainerElement.style.display = 'block';
     timeInput.style.display = 'block';
-    progressBoxElement.style.overflow = 'visible';
     progressBoxElement.style.width = '256px';
     progressElement.style.display = 'none';
     progressTextGroupElement.style.display = 'none';
@@ -232,7 +231,6 @@ function startWork() {
 function updateUIForWorkStart() {
     timeInputContainerElement.style.display = 'none';
     timeInput.style.display = 'none';
-    progressBoxElement.style.overflow = 'hidden';
     progressBoxElement.style.width = '100%';
     timeInput.style.cursor = 'default';
     progressElement.style.display = 'block';

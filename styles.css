@@ -315,19 +315,17 @@ input[type=number] {
     width: 100%;
     height: 100%;
     padding: 0;
+    opacity: 0;
     cursor: pointer;
     color: transparent;
     background-color: transparent;
     border: none;
-}
-
-#timeInput:focus {
     /* user-select none */
     user-select: none;
+    -o-user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
-    -o-user-select: none;
 }
 
 #timeInputBlock {
