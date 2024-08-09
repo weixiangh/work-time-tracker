@@ -6,22 +6,22 @@
     --surface-dim: #d9d5d3;
     --surface: #e2e0df;
     --on-surface: #4a463c;
-    --background: #f6f5f4;
-    --on-background: #2e2824;
+    --background: #f8f7f7;
+    --on-background: #221e1c;
     --gray: #6b6561;
     --on-gray: #c1bfbd;
 }
 
 .dark-mode {
-    --primary: #ff740a;
-    --on-primary: black;
+    --primary: hsl(26, 100%, 52%);
+    --on-primary: white;
     --error: #e44444;
     --error-container: #520b00;
     --surface-dim: #312d2b;
     --surface: #201e1d;
     --on-surface: #c3c0b6;
     --background: #161412;
-    --on-background: #edebe9;
+    --on-background: #f1f0ee;
     --gray: #9e9894;
     --on-gray: #42403e;
 }
@@ -127,14 +127,6 @@ button::after {
     }
 }
 
-button.normal { pointer-events: auto; }
-
-button.disabled {
-    pointer-events: none;
-    background-color: var(--gray);
-    color: var(--on-gray);
-}
-
 #buttonGroup {
     display: flex;
     align-items: center;
@@ -176,109 +168,6 @@ body:not(.dark-mode) #theme-switch::before {
 body.dark-mode #theme-switch::before {
     content: "dark_mode";
 }
-
-/*
-#theme-icon {
-    font-size: 16px;
-    color: var(--on-surface);
-    transition: 0.2s ease;
-}
-
-body:not(.dark-mode) #theme-icon {
-    content: "light_mode";
-}
-
-body.dark-mode #theme-icon {
-    content: "dark_mode";
-}
-*/
-
-/* 語言切換開關 */
-/*
-#language-switch {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border: none;
-    width: 32px;
-    height: 32px;
-    margin: 0;
-    padding: 4px;
-    background-color: var(--surface);
-    transition: 0.3s ease-out;
-}
-
-#language-switch:hover {
-    background-color: var(--surface-dim);
-    transition: 0.2s ease;
-}
-
-#language-icon {
-    content: "language";
-    font-size: 16px;
-    color: var(--on-surface);
-    transition: 0.2s ease;
-}
-
-.language-dropdown {
-    position: relative;
-    display: inline-block;
-    transition: 0.3 ease-out;
-}
-
-.language-menu {
-    position: absolute;
-    display: inline-flex;
-    flex-direction: column;
-    overflow: hidden;
-    z-index: 1;
-    right: 0;
-    margin-top: 8px;
-    //border: 4px solid var(--background);
-    border-radius: 8px;
-    background-color: var(--surface);
-    gap: 4px;
-    width: auto;
-    
-    height: 0;
-    padding: 0 8px;
-    opacity: 0;
-    transition: 0.2s ease;
-}
-
-.language-menu.open {
-    height: auto;
-    padding: 8px 8px; 
-    opacity: 1;
-}
-
-.language-option {
-    display: block;
-    text-align: left;
-    cursor: pointer;
-    height: auto;
-    width: 100%;
-    padding: 4px;
-    margin: 0;
-    border: none;
-    font-size: 16px;
-    border-radius: 4px;
-    color: var(--on-surface);
-    background-color: transparent;
-}
-
-.language-option:hover {
-    background-color: var(--background);
-    transition: 0.2s ease;
-}
-
-@media (hover: hover) {
-    .language-menu button:hover::after {
-        opacity: .2;
-    }
-}
-*/
 
 /* 圖標樣式 */
 .material-symbols-outlined {
@@ -333,7 +222,7 @@ body.dark-mode #theme-icon {
 #clock { font-size: 24px; margin-bottom: 20px; }
 
 /* 目標時間設置相關樣式 */
-#targetHoursGroup {
+#timeInputContainer {
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -341,7 +230,7 @@ body.dark-mode #theme-icon {
     justify-content: center;
 }
 
-#setGoalTime {
+#timeInputTitle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -353,18 +242,18 @@ body.dark-mode #theme-icon {
     color: var(--on-background);
 }
 
-#setGoalTime::before {
+#timeInputTitle::before {
     content: "schedule";
     font-family: "Material Symbols Outlined";
     font-size: 20px;
 }
 
-#targetContainer {
+#timeInputGroup {
     margin: 8px;
     position: relative;
 }
 
-#targetTime {
+#timeInputSurface {
     display: inline-flex;
     align-items: baseline;
     width: 168px;
@@ -394,7 +283,7 @@ body.dark-mode #theme-icon {
     border-bottom: 2px solid var(--primary);
 }
 
-#targetInputContainer {
+#timeInputInner {
     position: absolute;
     display: inline-flex;
     justify-content: flex-end;
@@ -405,7 +294,7 @@ body.dark-mode #theme-icon {
     transform: translate(-50%, -50%);
 }
 
-#targetInput {
+#timeInput {
     position: absolute;
     top: 0;
     left: 0;
@@ -415,7 +304,7 @@ body.dark-mode #theme-icon {
     cursor: default;
 }
 
-#targetInputBlock {
+#timeInputBlock {
     display: flex;
     width: 24px;
     margin-left: 2px;
@@ -436,10 +325,10 @@ body.dark-mode #theme-icon {
     animation: blink 1s step-end infinite;
 }
 
-#targetTime .dim { opacity: 0.5; }
+#timeInputSurface .dim { opacity: 0.5; }
 
 /* 進度條相關樣式 */
-#progressBar {
+#progressBox {
     display: inline-flex;
     align-items: center;
     position: relative;
@@ -453,7 +342,7 @@ body.dark-mode #theme-icon {
     background-color: var(--surface);
 }
 
-#progressBar:hover {
+#progressBox:hover {
     transition: 0.2s ease;
     background-color: var(--surface-dim);
 }

@@ -1,30 +1,24 @@
 // 常用 DOM 元素的引用
 const clockElement = document.getElementById('clock');
-const progressBarElement = document.getElementById('progressBar');
+const progressBoxElement = document.getElementById('progressBox');
 const progressElement = document.getElementById('progress');
 const progressTextGroupElement = document.getElementById('progressTextGroup');
 const progressPercentageElement = document.getElementById('progressPercentage');
 const currentWorkTimeElement = document.getElementById('currentWorkTime');
-const targetHoursGroupElement = document.getElementById('targetHoursGroup');
+const timeInputContainerElement = document.getElementById('timeInputContainer');
 const timeContainerH = document.getElementById('timeContainerH');
 const timeContainerM = document.getElementById('timeContainerM');
-const workButton = document.getElementById('work');
-const breakButton = document.getElementById('break');
-const endButton = document.getElementById('end');
-const resetButton = document.getElementById('reset');
-const clearButton = document.getElementById('clear');
 const themeSwitch = document.getElementById('theme-switch');
 
 // 目標時間相關元素
-const targetContainer = document.getElementById('targetContainer');
-const targetTime = document.getElementById('targetTime');
-const targetInput = document.getElementById('targetInput');
-const hoursTensSpan = targetTime.querySelector('.hoursTens');
-const hoursUnitsSpan = targetTime.querySelector('.hoursUnits');
-const minutesTensSpan = targetTime.querySelector('.minutesTens');
-const minutesUnitsSpan = targetTime.querySelector('.minutesUnits');
-const separatorH = targetTime.querySelector('.separatorH');
-const separatorM = targetTime.querySelector('.separatorM');
+const timeInputSurface = document.getElementById('timeInputSurface');
+const timeInput = document.getElementById('timeInput');
+const hoursTensSpan = timeInputSurface.querySelector('.hoursTens');
+const hoursUnitsSpan = timeInputSurface.querySelector('.hoursUnits');
+const minutesTensSpan = timeInputSurface.querySelector('.minutesTens');
+const minutesUnitsSpan = timeInputSurface.querySelector('.minutesUnits');
+const separatorH = timeInputSurface.querySelector('.separatorH');
+const separatorM = timeInputSurface.querySelector('.separatorM');
 const blinkingCursor = document.getElementById('blinkingCursor');
 
 // 全局變量
@@ -46,12 +40,8 @@ function switchTheme(e) {
     document.body.classList.toggle('dark-mode');
     if (document.body.classList.contains('dark-mode')) {
         localStorage.setItem('theme', 'dark');
-        //document.getElementById('theme-switch::before').style.content = 'dark_mode';
-        //document.getElementById('theme-icon').textContent = 'dark_mode';
     } else {
         localStorage.setItem('theme', 'light');
-        //document.getElementById('theme-switch::before').style.content = 'light_mode';
-        //document.getElementById('theme-icon').textContent = 'light_mode';
     }
 }
 
@@ -62,132 +52,8 @@ const currentTheme = localStorage.getItem('theme');
 if (currentTheme) {
     document.body.classList[currentTheme === 'dark' ? 'add' : 'remove']('dark-mode');
     if (currentTheme === 'dark') {
-        //document.getElementById('theme-switch::before').style.content = 'dark_mode';
-        //document.getElementById('theme-icon').textContent = 'dark_mode';
-    } else {
-        //document.getElementById('theme-switch::before').style.content = 'light_mode';
-        //document.getElementById('theme-icon').textContent = 'light_mode';
     }
 }
-
-/*
-// 語言切換功能
-const languageSwitch = document.getElementById('language-switch');
-const languageIcon = document.getElementById('language-icon');
-const languageMenu = document.querySelector('.language-menu');
-const languageOptions = document.querySelectorAll('.language-option');
-let currentLanguage = 'en'; // 預設為英文
-
-// 切換語言選單的顯示/隱藏
-function toggleLanguageMenu() {
-    languageMenu.classList.toggle('open');
-}
-
-// 切換語言
-function switchLanguage(lang) {
-    currentLanguage = lang;
-    updateLanguageContent();
-    toggleLanguageMenu();
-    updateLanguageFontSize();
-}
-
-// 更新網頁內容的語言
-function updateLanguageContent() {
-    // 在此處添加更新網頁內容的邏輯
-    console.log(`Current language: ${currentLanguage}`);
-}
-
-// 修改字級大小
-function updateLanguageFontSize() {
-    if (currentLanguage = 'zh') {
-        document.querySelector('.separatorH').style.fontSize = '20px';
-        document.querySelector('.separatorM').style.fontSize = '20px';
-    }
-}
-
-// 事件監聽器
-languageSwitch.addEventListener('click', toggleLanguageMenu);
-languageOptions.forEach(option => {
-    option.addEventListener('click', () => switchLanguage(option.dataset.lang));
-});
-
-// 點擊外部關閉語言選單
-document.addEventListener('click', (event) => {
-    if (!event.target.closest('.language-dropdown')) {
-        languageMenu.classList.remove('open');
-    }
-});
-
-//各語言文字內容
-const languageContent = {
-    en: {
-        //title: 'Work Time Tracker',
-        setGoalTime: 'Set Goal Time',
-        timerH: 'h',
-        timerM: 'm',
-        work: 'Work',
-        break: 'Break',
-        end: 'End',
-        reset: 'Reset',
-        export: 'Export',
-        clear: 'Clear',
-        records: 'Work Records'
-    },
-    zh: {
-       //title: '工作時間追蹤器',
-        setGoalTime: '設定目標時間',
-        timerH: '時',
-        timerM: '分',
-        work: '工作',
-        break: '休息',
-        end: '結束',
-        reset: '重置',
-        export: '匯出',
-        clear: '清除',
-        records: '工作記錄'
-    },
-
-    /*
-    ja: {
-        title: '作業時間トラッカー',
-        setGoalTime: '目標時間を設定',
-        work: '作業',
-        break: '休憩',
-        end: '終了',
-        reset: 'リセット',
-        export: 'エクスポート',
-        clear: '消去',
-        records: '作業記録'
-    },
-    es: {
-        title: 'Rastreador de tiempo de trabajo',
-        setGoalTime: 'Establecer tiempo objetivo',
-        work: 'Trabajar',
-        break: 'Descanso',
-        end: 'Terminar',
-        reset: 'Restablecer',
-        export: 'Exportar',
-        clear: 'Borrar',
-        records: 'Registros de trabajo'
-    }
-    
-};
-*/
-
-function updateLanguageContent() {
-    //document.querySelector('h1').textContent = languageContent[currentLanguage].title;
-    document.getElementById('setGoalTime').querySelector('span').textContent = languageContent[currentLanguage].setGoalTime;
-    document.querySelector('.separatorH').textContent = languageContent[currentLanguage].timerH;
-    document.querySelector('.separatorM').textContent = languageContent[currentLanguage].timerM;
-    document.getElementById('work').querySelector('span').textContent = languageContent[currentLanguage].work;
-    document.getElementById('break').querySelector('span').textContent = languageContent[currentLanguage].break;
-    document.getElementById('end').querySelector('span').textContent = languageContent[currentLanguage].end;
-    document.getElementById('reset').querySelector('span').textContent = languageContent[currentLanguage].reset;
-    document.getElementById('export').querySelector('span').textContent = languageContent[currentLanguage].export;
-    document.getElementById('clear').querySelector('span').textContent = languageContent[currentLanguage].clear;
-    document.getElementById('summary-title').textContent = languageContent[currentLanguage].records;
-}
-//
 
 // 更新時鐘顯示
 function updateClock() {
@@ -255,7 +121,7 @@ function updateProgressAndTime() {
         return;
     }
     
-    targetHoursGroupElement.style.display = 'none';
+    timeInputContainerElement.style.display = 'none';
     progressTextGroupElement.style.display = 'flex';
     
     const now = new Date();
@@ -268,7 +134,7 @@ function updateProgressAndTime() {
     const targetHours = parseFloat(hoursSpan) + parseFloat(minutesSpan) / 60;
     let percentage = Math.min((elapsedHours / targetHours) * 100, 100);
     
-    updateProgressBar(percentage);
+    updateProgressBox(percentage);
     updateTimeDisplay(elapsedHours, targetHours);
     
     requestAnimationFrame(updateProgressAndTime);
@@ -276,14 +142,14 @@ function updateProgressAndTime() {
 
 // 重置進度顯示
 function resetProgressDisplay() {
-    targetHoursGroupElement.style.display = 'block';
-    progressBarElement.style.width = '256px';
+    timeInputContainerElement.style.display = 'block';
+    progressBoxElement.style.width = '256px';
     progressElement.style.display = 'none';
     progressTextGroupElement.style.display = 'none';
 }
 
 // 更新進度條
-function updateProgressBar(percentage) {
+function updateProgressBox(percentage) {
     progressElement.style.width = `${percentage}%`;
     progressPercentageElement.textContent = `${percentage.toFixed(1)}%`;
     
@@ -303,7 +169,7 @@ function work() {
             // 若無輸入數值，使用預設值 01:00
             originalInput = '0100';
         }
-        updateTargetTime();
+        updateGoalTime();
         if (isOnBreak) {
             endBreak();
         } else {
@@ -316,7 +182,7 @@ function work() {
 }
 
 // 更新目標時間
-function updateTargetTime() {
+function updateGoalTime() {
     let totalMinutes = parseInt(originalInput.slice(0, 2)) * 60 + parseInt(originalInput.slice(2, 4));
     totalMinutes = Math.min(totalMinutes, 99 * 60 + 60); // 限制最大時間為 99 小時 60 分鐘
 
@@ -356,28 +222,13 @@ function startWork() {
 
 // 更新UI以開始工作
 function updateUIForWorkStart() {
-    breakButton.classList.remove('disabled');
-    breakButton.classList.add('normal');
-    workButton.classList.remove('normal');
-    workButton.classList.add('disabled');
-    endButton.classList.remove('disabled');
-    endButton.classList.add('normal');
-    resetButton.classList.remove('disabled');
-    resetButton.classList.add('normal');
-    targetHoursGroupElement.style.display = 'none';
-    progressBarElement.style.width = '100%';
-    progressBarElement.style.cursor = 'default';
+    timeInputContainerElement.style.display = 'none';
+    progressBoxElement.style.width = '100%';
+    progressBoxElement.style.cursor = 'default';
     progressElement.style.display = 'block';
     progressElement.style.width = '2%';
     progressTextGroupElement.style.display = 'flex';
     updateButtonVisibility('working');
-}
-
-// 判定輸入的數值是否有效
-function updateWorkButtonState() {
-    const isValid = originalInput.length === 4;
-    workButton.disabled = !isValid;
-    workButton.classList.toggle('disabled', !isValid);
 }
 
 // 將所有時間數值規零
@@ -438,10 +289,6 @@ function startBreak() {
     if (!isOnBreak && startTime) {
         isOnBreak = true;
         breakStartTime = new Date();
-        breakButton.classList.remove('normal');
-        breakButton.classList.add('disabled');
-        workButton.classList.remove('disabled');
-        workButton.classList.add('normal');
         addRecord('Start Break');
         updateProgressAndTime();
         updateButtonVisibility('break');
@@ -482,15 +329,6 @@ function resetWorkSession() {
 
 // 更新UI以結束工作
 function updateUIForWorkEnd() {
-    breakButton.classList.remove('normal');
-    breakButton.classList.add('disabled');
-    workButton.classList.remove('disabled');
-    workButton.classList.add('normal');
-    workButton.querySelector('span').textContent = 'Work';
-    endButton.classList.remove('normal');
-    endButton.classList.add('disabled');
-    resetButton.classList.remove('normal');
-    resetButton.classList.add('disabled');
     updateProgressAndTime();
     updateButtonVisibility('initial');
 }
@@ -510,15 +348,7 @@ function resetUIElements() {
     progressElement.style.width = '0%';
     progressPercentageElement.textContent = '0.0%';
     currentWorkTimeElement.textContent = '00:00:00';
-    workButton.classList.remove('disabled');
-    workButton.classList.add('normal');
-    breakButton.classList.remove('normal');
-    breakButton.classList.add('disabled');
-    endButton.classList.remove('normal');
-    endButton.classList.add('disabled');
-    resetButton.classList.remove('normal');
-    resetButton.classList.add('disabled');
-    progressBarElement.style.cursor = 'pointer';
+    progressBoxElement.style.cursor = 'pointer';
     timeContainerH.style.borderBottomColor = 'var(--primary)';
     timeContainerM.style.borderBottomColor = 'var(--primary)';
 }
@@ -557,7 +387,7 @@ function updateButtonVisibility(state) {
 
 // 事件監聽器設置
 
-targetInput.addEventListener('input', (e) => {
+timeInput.addEventListener('input', (e) => {
     setAllElementsToSemiTransparent(); // 將所有元素更改為半透明狀態
     setAllElementsToZero(); // 將所有數值規零
 
@@ -566,14 +396,14 @@ targetInput.addEventListener('input', (e) => {
     // 根據輸入的數字數量設置透明度
     if (e.target.value.length >= 1) {
         minutesUnitsSpan.style.opacity = '1';
-        targetTime.querySelector('.separatorM').style.opacity = '1';
+        timeInputSurface.querySelector('.separatorM').style.opacity = '1';
     }
     if (e.target.value.length >= 2) {
         minutesTensSpan.style.opacity = '1';
     }
     if (e.target.value.length >= 3) {
         hoursUnitsSpan.style.opacity = '1';
-        targetTime.querySelector('.separatorH').style.opacity = '1';
+        timeInputSurface.querySelector('.separatorH').style.opacity = '1';
     }
     if (e.target.value.length >= 4) {
         hoursTensSpan.style.opacity = '1';
@@ -583,13 +413,11 @@ targetInput.addEventListener('input', (e) => {
     hoursUnitsSpan.textContent = originalInput[1];
     minutesTensSpan.textContent = originalInput[2];
     minutesUnitsSpan.textContent = originalInput[3];
-    
-    updateWorkButtonState();
 });
 
-targetInput.addEventListener('blur', () => {
+timeInput.addEventListener('blur', () => {
     isEditing = false;
-    targetInput.style.display = 'none';
+    timeInput.style.display = 'none';
     blinkingCursor.style.display = 'none';
     
     setAllElementsToVisible() // 將所有元素更改為正常可見狀態
@@ -598,7 +426,7 @@ targetInput.addEventListener('blur', () => {
     targetHours = parseFloat(hoursSpan) + parseFloat(minutesSpan) / 60;
 });
 
-progressBarElement.addEventListener('click', () => {
+progressBoxElement.addEventListener('click', () => {
     if (!isEditing) {
         isEditing = true;
         setAllElementsToSemiTransparent(); // 將所有元素更改為半透明狀態
@@ -611,9 +439,9 @@ function updateUIInput() {
     timeContainerH.style.borderBottomColor = 'var(--gray)';
     timeContainerM.style.borderBottomColor = 'var(--gray)';
     blinkingCursor.style.display = 'block';
-    targetInput.style.display = 'block';
-    targetInput.value = "" ;
-    targetInput.focus();
+    timeInput.style.display = 'block';
+    timeInput.value = "" ;
+    timeInput.focus();
 }
 
 document.body.addEventListener('click', function(event) {
