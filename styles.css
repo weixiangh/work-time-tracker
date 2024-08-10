@@ -34,6 +34,7 @@ body {
     margin: 0 auto;
     padding: 20px;
     text-align: center;
+    transition: 0.2s ease;
 }
 
 header {
@@ -377,7 +378,7 @@ input[type=number] {
     overflow: hidden;
     height: 128px;
     width: 256px;
-    margin: 16px 0;
+    margin: 24px 0;
     border-radius: 8px;
     transition: 0.4s ease-out;
     background-color: var(--surface);
@@ -543,7 +544,7 @@ summary::-webkit-details-marker { display: none; }
     width: 96px;
     margin-top: 12px 8px;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
 }
 
