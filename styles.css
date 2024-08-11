@@ -37,6 +37,8 @@ body {
     transition: 0.2s ease;
 }
 
+a { -webkit-tap-highlight-color: transparent; }
+
 header {
     display: flex;
     justify-content: space-between;
@@ -383,7 +385,7 @@ input[type=number] {
     overflow: hidden;
     height: 128px;
     width: 256px;
-    margin: 24px 0;
+    margin: 32px 0;
     border-radius: 8px;
     transition: 0.4s ease-out;
     background-color: var(--surface);
@@ -440,7 +442,8 @@ input[type=number] {
 
 /* 記錄詳情樣式 */
 details {
-    margin-top: 20px;
+    display: inline-block;
+    margin: 40px 0;
     overflow: hidden;
 }
 
@@ -451,7 +454,8 @@ summary {
     align-items: center;
     font-size: 16px;
     font-weight: 400;
-    padding: 16px;
+    padding: 8px;
+    border-radius: 8px;
     color: var(--gray);
     cursor: pointer;
 }
@@ -463,11 +467,17 @@ summary::before {
     transition: 0.3s ease-out;
 }
 
+#summaryButtons {
+    margin-top: 16px;
+}
+
 details[open] > summary::before { transform: rotate(180deg); }
 
 summary::-webkit-details-marker { display: none; }
 
-#summary-title { margin: 0px 4px; }
+#summary-title {
+    margin: 0px 4px; 
+}
 
 #records { 
     width: 100%; 
