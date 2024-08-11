@@ -300,13 +300,30 @@ body.dark-mode #theme-switch::before {
 
 #inputNumberH, #inputNumberM {
     display: flex;
+    position: relative;
     justify-content: flex-end;
     width: 56px;
     font-size: 40px;
     font-weight: 500;
     line-height: 40px;
     padding: 0 2px;
-    border-bottom: 2px solid var(--primary);
+    /*border-bottom: 2px solid var(--primary);*/
+}
+
+#inputNumberH::after, #inputNumberM::after {
+    content: '';
+    position: absolute;
+    display: block;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary);
+    animation: flash ease .5s 2 2s;
+}
+
+@keyframes flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
 }
 
 #timeInputInner {
@@ -459,6 +476,7 @@ summary {
     border-radius: 8px;
     color: var(--gray);
     cursor: pointer;
+    margin-bottom: 0px;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -466,12 +484,37 @@ summary::before {
     content: "keyboard_arrow_down";
     font-family: "Material Symbols Outlined";
     font-size: 20px;
-    transition: 0.3s ease-out;
 }
 
-#summaryButtons {
-    margin-top: 16px;
+details[open] summary {
+    margin-bottom: 16px;
+    transition: .2s ease;
 }
+
+details[open] summary ~ * {
+    animation: opening .2s ease;
+}
+
+details.closing summary ~ * {
+    animation: closing .2s ease;
+}
+
+@keyframes opening {
+    0%    { opacity: 0 }
+    100%  { opacity: 1 }
+}
+
+@keyframes closing {
+    0%    { opacity: 0 }
+    100%  { opacity: 1 }
+}
+
+/*
+@keyframes sweep {
+    0%    { opacity: 0; margin-top: -10px }
+    100%  { opacity: 1; margin-top: 0px }
+}
+*/
 
 details[open] > summary::before { transform: rotate(180deg); }
 
