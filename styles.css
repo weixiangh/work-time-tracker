@@ -176,7 +176,12 @@ button::after {
     font-family: "Material Symbols Outlined";
     font-size: 16px;
     color: var(--on-surface);
+    opacity: 0.6;
     transition: 0.2s ease;
+}
+
+#theme-switch:hover::before {
+    opacity: 1;
 }
 
 body:not(.dark-mode) #theme-switch::before {

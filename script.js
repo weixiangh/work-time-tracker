@@ -265,7 +265,7 @@ function setAllElementsToSemiTransparent() {
     ];
 
     elements.forEach(element => {
-        element.style.opacity = '0.4';
+        element.style.opacity = '0.2';
     });
 }
 
