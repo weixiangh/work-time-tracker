@@ -1,4 +1,4 @@
-# Work Timer
+## Work Timer
 一個簡易的工作時間計時器，能夠即時顯示目前工作進度和已經花費的時間。  
   
 A simple work time tracker that shows real-time progress and the time spent.
