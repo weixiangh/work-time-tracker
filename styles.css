@@ -492,11 +492,11 @@ details[open] summary {
 }
 
 details[open] summary ~ * {
-    animation: opening .2s ease;
+    animation: opening .3s ease-out;
 }
 
 details.closing summary ~ * {
-    animation: closing .2s ease;
+    animation: closing .3s ease-out;
 }
 
 @keyframes opening {
