@@ -201,7 +201,6 @@ button::after {
 
 #themeSwitch:hover {
     background-color: var(--surface-dim);
-    transition: 0.2s ease;
 }
 
 #themeSwitch::before {
@@ -210,7 +209,6 @@ button::after {
     font-size: 16px;
     color: var(--on-surface);
     opacity: 0.6;
-    transition: 0.2s ease;
 }
 
 #themeSwitch:hover::before {
@@ -499,26 +497,9 @@ summary::before {
 }
 
 details[open] summary {
+    opacity: 1;
     margin-bottom: 16px;
-    transition: .2s ease;
-}
-
-details[open] summary ~ * {
-    animation: opening .3s ease-out;
-}
-
-details.closing summary ~ * {
-    animation: closing .3s ease-out;
-}
-
-@keyframes opening {
-    0%    { opacity: 0 }
-    100%  { opacity: 1 }
-}
-
-@keyframes closing {
-    0%    { opacity: 0 }
-    100%  { opacity: 1 }
+    transition: .3s ease-out;
 }
 
 /*
