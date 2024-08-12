@@ -475,7 +475,6 @@ input[type=number] {
 details {
     display: inline-block;
     margin: 40px 0;
-    overflow: hidden;
 }
 
 summary {
