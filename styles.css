@@ -82,7 +82,7 @@ h1 a {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
+    gap: 12px;
     padding: 4px;
 }
 
@@ -154,8 +154,8 @@ button::after {
     justify-content: center;
 }
 
-/* 主題切換開關 */
-#theme-switch {
+/* Github 連結 */
+#githubLink {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -169,12 +169,42 @@ button::after {
     transition: 0.3s ease-out;
 }
 
-#theme-switch:hover {
+#githubLink:hover {
     background-color: var(--surface-dim);
     transition: 0.2s ease;
 }
 
-#theme-switch::before {
+.bi-github {
+    color: var(--on-surface);
+    opacity: 0.6;
+    transition: 0.2s ease;
+}
+
+#githubLink:hover > .bi-github {
+    opacity: 1;
+}
+
+/* 主題切換開關 */
+#themeSwitch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 4px;
+    background-color: var(--surface);
+    transition: 0.3s ease-out;
+}
+
+#themeSwitch:hover {
+    background-color: var(--surface-dim);
+    transition: 0.2s ease;
+}
+
+#themeSwitch::before {
     content: "refresh";
     font-family: "Material Symbols Outlined";
     font-size: 16px;
@@ -183,15 +213,15 @@ button::after {
     transition: 0.2s ease;
 }
 
-#theme-switch:hover::before {
+#themeSwitch:hover::before {
     opacity: 1;
 }
 
-body:not(.dark-mode) #theme-switch::before {
+body:not(.dark-mode) #themeSwitch::before {
     content: "light_mode";
 }
 
-body.dark-mode #theme-switch::before {
+body.dark-mode #themeSwitch::before {
     content: "dark_mode";
 }
 
@@ -300,30 +330,13 @@ body.dark-mode #theme-switch::before {
 
 #inputNumberH, #inputNumberM {
     display: flex;
-    position: relative;
     justify-content: flex-end;
     width: 56px;
     font-size: 40px;
     font-weight: 500;
     line-height: 40px;
     padding: 0 2px;
-    /*border-bottom: 2px solid var(--primary);*/
-}
-
-#inputNumberH::after, #inputNumberM::after {
-    content: '';
-    position: absolute;
-    display: block;
-    bottom: -2px;
-    width: 100%;
-    height: 2px;
-    background-color: var(--primary);
-    animation: flash ease .5s 2 2s;
-}
-
-@keyframes flash {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    border-bottom: 2px solid var(--primary);
 }
 
 #timeInputInner {
@@ -573,7 +586,8 @@ summary::-webkit-details-marker { display: none; }
     min-width: 256px;
     max-width: 320px;
     margin: auto 20px;
-    padding: 24px;
+    padding: 20px 24px;
+    border: none;
     border-radius: 8px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -600,18 +614,15 @@ summary::-webkit-details-marker { display: none; }
 
 #modalConfirm, #modalCancel {
     padding: 8px 16px;
-    height: 40px;
-    width: 96px;
     margin-top: 12px 8px;
-    border-radius: 8px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
 }
 
 #modalConfirm {
     font-weight: 600;
-    color: var(--primary);
-    background-color: rgba(245, 105, 0, 0.1);
+    color: white;
+    background-color: var(--primary);
 }
 
 #modalCancel {

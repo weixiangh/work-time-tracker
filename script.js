@@ -8,7 +8,7 @@ const currentWorkTimeElement = document.getElementById('currentWorkTime');
 const timeInputContainerElement = document.getElementById('timeInputContainer');
 const inputNumberH = document.getElementById('inputNumberH');
 const inputNumberM = document.getElementById('inputNumberM');
-const themeSwitch = document.getElementById('theme-switch');
+const themeSwitch = document.getElementById('themeSwitch');
 
 // 目標時間相關元素
 const timeInputSurface = document.getElementById('timeInputSurface');
@@ -400,6 +400,7 @@ function updateButtonVisibility(state) {
 timeInput.addEventListener('input', (e) => {
     setAllElementsToSemiTransparent(); // 將所有元素更改為半透明狀態
     setAllElementsToZero(); // 將所有數值規零
+    updateUnderlineColor();
 
     originalInput = e.target.value.replace(/\D/g, '').padStart(4, '0').slice(-4);
     
@@ -440,6 +441,7 @@ timeInput.addEventListener('click', () => {
         isEditing = true;
         setAllElementsToSemiTransparent(); // 將所有元素更改為半透明狀態
         updateUIInput();
+        updateUnderlineColor();
     }
 });
 
@@ -452,10 +454,14 @@ timeInput.addEventListener('keydown', function(event) {
     }
 });
 
-// 更新UI以開始輸入時間
-function updateUIInput() {
+// 更新底線顏色
+function updateUnderlineColor() {
     inputNumberH.style.borderBottomColor = 'var(--gray)';
     inputNumberM.style.borderBottomColor = 'var(--gray)';
+}
+
+// 更新UI以開始輸入時間
+function updateUIInput() {
     blinkingCursor.style.display = 'block';
     timeInput.value = "" ;
     timeInput.focus();
