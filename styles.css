@@ -414,7 +414,8 @@ input[type=number] {
     overflow: hidden;
     height: 128px;
     width: 256px;
-    margin: 32px 0;
+    margin-top: 32px;
+    margin-bottom: 24px;
     border-radius: 8px;
     transition: 0.4s ease-out;
     background-color: var(--surface);
@@ -566,17 +567,17 @@ summary::-webkit-details-marker { display: none; }
     min-width: 256px;
     max-width: 320px;
     margin: auto 20px;
-    padding: 20px 24px;
+    padding: 20px 32px;
     border: none;
     border-radius: 8px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     background-color: var(--background);
 }
 
 #modalTitle {
     display: block;
-    margin: 8px 0;
+    margin: 12px 0;
     font-size: 20px;
     font-weight: 600;
     line-height: 1.5;
@@ -585,16 +586,17 @@ summary::-webkit-details-marker { display: none; }
 
 #modalMessage {
     display: block;
-    margin: 16px 0;
+    margin-top: 16px;
+    margin-bottom: 24px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.5;
     color: var(--on-surface);
 }
 
 #modalConfirm, #modalCancel {
     padding: 8px 16px;
-    margin-top: 12px 8px;
+    margin: 8px;
     font-size: 16px;
     font-weight: 500;
 }
